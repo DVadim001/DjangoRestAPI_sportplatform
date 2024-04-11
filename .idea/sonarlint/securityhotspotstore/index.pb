@@ -25,3 +25,5 @@ C
 templates/main.html,7\0\70463c664bcf38fa5d46b8f3fd74b75dac46c512
 G
 sportsplatform/views.py,9\e\9e1836a983a63e0f92f0e5b0f078185561867571
+@
+requirements.txt,1\9\19359a61ae2446b51b549167b014da2fcf265768
