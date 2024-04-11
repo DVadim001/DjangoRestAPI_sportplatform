@@ -16,9 +16,9 @@ F
 =
 users/urls.py,7\e\7ebb6dc32a2768a7e73ce1c83409f9c85bd4ad6a
 C
-templates/base.html,d\a\da7c237b85a69c00a9ab8c189bf63e22070fcac3
+templates/base.html,d/a/da7c237b85a69c00a9ab8c189bf63e22070fcac3
 W
-'users/templates/registration/login.html,c\d\cdd52bbd3b8779381ef811df005a74ac0e96baa4
+'users/templates/registration/login.html,c/d/cdd52bbd3b8779381ef811df005a74ac0e96baa4
 D
 static/css/style.css,3\6\36e68d0961b94e1750624bc9e2f66c060d73b91b
 C
@@ -26,4 +26,4 @@ C
 G
 sportsplatform/views.py,9\e\9e1836a983a63e0f92f0e5b0f078185561867571
 @
-requirements.txt,1\9\19359a61ae2446b51b549167b014da2fcf265768
+requirements.txt,1/9/19359a61ae2446b51b549167b014da2fcf265768
