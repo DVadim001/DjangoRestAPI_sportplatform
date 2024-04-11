@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+{% block title %}Профиль пользователя{% endblock title %}
+
+{% block content %}
+<h1>Профиль пользователя</h1>
+
+<div>
+    <h2>Контактные данные:</h2>
+    <p>Телефон: {{ user_profile.phone_number }}</p>
+    <p>Email: {{ user_profile.email }}</p>
+    <p>Адрес: {{ user_profile.address }}</p>
+</div>
+
+<div>
+    <p>Дата рождения: {{ user_profile.birth_date }}</p>
+    <p>Пол: {{ user_profile.gender }}</p>
+    <p>Рост: {{ user_profile.height }}</p>
+    <p>Вес: {{ user_profile.weight }}</p>
+</div>
+
+<div>
+    <h2>Уровень подготовки:</h2>
+    <p>{{ user_profile.experience_level }}</p>
+</div>
+
+<div>
+    <h2>Предпочтения:</h2>
+    <p>{{ user_profile.preferred_sports }}</p>
+</div>
+
+
+{% endblock content %}

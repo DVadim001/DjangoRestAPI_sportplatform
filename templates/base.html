@@ -1,0 +1,49 @@
+{% load tz %}
+<!DOCTYPE html>
+<html lang="ru">
+
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>{% block title %}WRC Sport Platform{% endblock title %}</title>
+
+            <!--Ссылка на CSS-->
+        <link rel="stylesheet" href="{% static 'css/style.css' %}">
+
+            <!-- Блок позволяет добавить дополнительные стили и скрипты в дочерних шаблонах-->
+        {% block extrahead %}{% endblock extrahead %}
+
+    </head>
+
+
+    <body>
+
+        <header>
+            <nav>
+                <!-- Навинационная панель-->
+                <ul>
+                    <li><a href="{% url 'home' %}">Home (пока не работает)</a></li>
+                        <!-- Прописать остальные ссылки-->
+                </ul>
+            </nav>
+        </header>
+
+        <main>
+            {% block content %}
+        <!--Основное содержание страницы-->
+            {% endblock content %}
+        </main>
+
+        <footer>
+            <p> {{ now "Y" }} WRC Sports Platform</p>
+        </footer>
+
+        {% block extrajs %}
+        <!-- Сюда можно добавлять дополнительные JavaScript файлы-->
+        {% endblock extrajs %}
+
+    </body>
+
+
+</html>
