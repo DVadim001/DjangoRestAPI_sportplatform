@@ -1,5 +1,6 @@
 from django import forms
 from .models import UserProfile
+from django.forms import ModelForm
 
 
 class UserProfileForm(forms.ModelForm):
@@ -16,3 +17,9 @@ class UserProfileForm(forms.ModelForm):
                   'club_memberships',
                   'subscriptions',
                   'privacy_settings']
+
+
+class UserSettingsForm(ModelForm):
+    class Meta:
+        model = UserProfile
+        fields = ['receive_newsletters', 'public_profile']
