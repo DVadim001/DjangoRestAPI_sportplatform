@@ -2,6 +2,10 @@ from django.db import models
 from django.conf import settings
 
 
+def default_privacy_settings():
+    return {}
+
+
 class UserProfile(models.Model):
     user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
 
@@ -41,7 +45,10 @@ class UserProfile(models.Model):
     subscriptions = models.TextField(blank=True, default='')
 
     # Настройка конфеденциальности
-    privacy_settings = models.JSONField(blank=True, default=dict)
+    privacy_settings = models.JSONField(blank=True, default=default_privacy_settings)
+
+    receive_newsletters = models.BooleanField(default=True)
+    public_profile = models.BooleanField(default=False)
 
     def __str__(self):
-        return self.user.username
+        return f"{self.user.username}'s profile"
