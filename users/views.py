@@ -3,6 +3,7 @@ from django.contrib.auth.forms import PasswordChangeForm, UserCreationForm
 from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import login as auth_login
+from django.contrib.auth import logout
 from django.contrib.auth import update_session_auth_hash
 
 from django.shortcuts import render, redirect
@@ -11,6 +12,19 @@ from .forms import UserProfileForm, UserSettingsForm
 from .models import UserProfile
 
 from django.db.models import Q
+
+from rest_framework import viewsets
+from .serializers import UserProfileSerializer, UserSettingsSerializer
+
+
+class UserProfileViewSet(viewsets.ModelViewSet):
+    queryset = UserProfile.objects.all()
+    serializer_class = UserProfileSerializer
+
+
+class UserSettingsViewSet(viewsets.ModelViewSet):
+    queryset = UserProfile.objects.all()
+    serializer_class = UserSettingsSerializer
 
 
 # Просмотр профиля пользователя
@@ -45,14 +59,9 @@ def register(request):
             auth_login(request, user)
             return redirect('users:login')
     else:
-        form = UserProfileForm
+        form = UserCreationForm
     context = {'form': form}
     return render(request, 'users/register.html', context)
-
-
-# Логин пользователя
-def login(request):
-    pass
 
 
 # Вывод всех пользователей
@@ -120,6 +129,17 @@ def update_profile_settings(request):
         form = UserSettingsForm(instance=profile)
     context = {'form': form}
     return render(request, 'users/settings.html', context)
+
+
+# Логин пользователя
+def login(request):
+    pass
+
+
+# Выход пользователя
+def logout_request(request):
+    logout(request)
+    return redirect('/')
 
 # Сброс пароля
 

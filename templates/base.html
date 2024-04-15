@@ -8,6 +8,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>{% block title %}WRC Sport Platform{% endblock title %}</title>
 
+        {% load static %}
             <!--Ссылка на CSS-->
         <link rel="stylesheet" href="{% static 'css/style.css' %}">
 
@@ -21,22 +22,30 @@
 
         <header>
             <nav>
-                <!-- Навинационная панель-->
+                <!-- Навигационная панель-->
                 <ul>
-                    <li><a href="{% url 'home' %}">Home (пока не работает)</a></li>
-                        <!-- Прописать остальные ссылки-->
+                    <li><a href="{% url 'main' %}">Главная</a></li>
+                    {% if not user.is_authenticated %}
+                        <li><a href="{% url 'users:register' %}">Регистрация</a></li>
+                        <a href="{% url 'users:login' %}">Вход</a>
+                    {% else %}
+                        <a href="{% url 'users:profile_view' %}">Профиль</a></p>
+                        <a href="{% url 'users:logout' %}">Выход</a>
+                    {% endif %}
+
+                    <!-- Прописать остальные ссылки-->
                 </ul>
             </nav>
         </header>
 
         <main>
             {% block content %}
-        <!--Основное содержание страницы-->
+            <!--Основное содержание страницы-->
             {% endblock content %}
         </main>
 
         <footer>
-            <p> {{ now "Y" }} WRC Sports Platform</p>
+            <p> {% now "Y" %} WRC Sports Platform</p>
         </footer>
 
         {% block extrajs %}
