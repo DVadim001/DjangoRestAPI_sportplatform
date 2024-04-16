@@ -4,10 +4,11 @@
 
 {% block content %}
 <h1>Добро пожаловать!</h1>
+
 <div>
     <h2>Пользователи:</h2>
     <ul>
-        {% for user in users_data %}
+        {% for user in users %}
             <li>{{ user.username }}</li>
         {% endfor %}
     </ul>

@@ -1,20 +1,18 @@
-from django.contrib.auth.models import User
-from django.contrib.auth.forms import PasswordChangeForm, UserCreationForm
 from django.contrib.admin.views.decorators import staff_member_required
+
+from django.contrib.auth import login as auth_login, logout, update_session_auth_hash, authenticate
+from django.contrib.auth.models import User
+from django.contrib.auth.forms import PasswordChangeForm, AuthenticationForm, UserCreationForm
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth import login as auth_login
-from django.contrib.auth import logout
-from django.contrib.auth import update_session_auth_hash
 
-from django.shortcuts import render, redirect
-
-from .forms import UserProfileForm, UserSettingsForm
-from .models import UserProfile
-
+from django.shortcuts import render, redirect, get_object_or_404
 from django.db.models import Q
 
-from rest_framework import viewsets
+from .forms import CustomUserCreationForm, UserProfileUpdateForm, UserSettingsForm
+from .models import UserProfile
 from .serializers import UserProfileSerializer, UserSettingsSerializer
+
+from rest_framework import viewsets
 
 
 class UserProfileViewSet(viewsets.ModelViewSet):
@@ -29,20 +27,22 @@ class UserSettingsViewSet(viewsets.ModelViewSet):
 
 # Просмотр профиля пользователя
 @login_required
-def profile_view(request):
-    profile, created = UserProfile.objects.get_or_create(user=request.user)
+def profile_view(request, user_id):
+    # Получаем профиль пользователя или возвращаем 404, если он не найден
+    user_profile = get_object_or_404(UserProfile, user__id=user_id)
+
+    # Проверяем, имеет ли текущий пользователь права на просмотр этой страницы
+    if request.user.id != user_profile.user.id and not request.user.is_superuser:
+        return redirect('permission_danied')
+
     if request.method == 'POST':
-        form = UserProfileForm(request.POST, instance=profile)
+        form = UserProfileUpdateForm(request.POST, request.FILES, instance=user_profile)
         if form.is_valid():
             form.save()
-            return redirect('profile')  # Убедитесь, что 'profile' ведет к нужному URL
+            return redirect('users:profile_view', user_id=user_id)
     else:
-        form = UserProfileForm(instance=profile)
+        form = UserProfileUpdateForm(instance=user_profile)
 
-    # Если 'user_profile' не используется в шаблоне, эту строку можно опустить
-    user_profile = UserProfile.objects.get(user=request.user)
-
-    # Передача формы и объекта профиля в контекст шаблона
     context = {
         'form': form,
         'user_profile': user_profile
@@ -50,16 +50,33 @@ def profile_view(request):
     return render(request, 'users/profile.html', context)
 
 
+# Логин пользователя
+def login(request):
+    if request.method == 'POST':
+        form = AuthenticationForm(request, data=request.POST)
+        if form.is_valid():
+            username = form.cleaned_data.get('username')
+            password = form.cleaned_data.get('password')
+            user = authenticate(username=username, password=password)
+            if user is not None:
+                auth_login(request, user)
+                return redirect('users:profile')
+    else:
+        form = AuthenticationForm()
+    context = {'form': form}
+    return render(request, 'users/login.html', context)
+
+
 # Регистрация пользователя
 def register(request):
     if request.method == 'POST':
-        form = UserCreationForm(request.POST)
+        form = CustomUserCreationForm(request.POST)
         if form.is_valid():
             user = form.save()
             auth_login(request, user)
-            return redirect('users:login')
+            return redirect('users:profile')
     else:
-        form = UserCreationForm
+        form = CustomUserCreationForm()
     context = {'form': form}
     return render(request, 'users/register.html', context)
 
@@ -68,7 +85,7 @@ def register(request):
 def get_all_users(request):
     users = User.objects.all()
     context = {'users': users}
-    return render(request, 'admin/users_list.html', context)
+    return render(request, 'users/users_list.html', context)
 
 
 # Поиск пользователя по фильтру (по имени и т.д.)
@@ -105,12 +122,12 @@ def edit_profile(request):
         profile = UserProfile(user=request.user)
 
     if request.method == 'POST':
-        form = UserProfileForm(request.POST, request.FILES, instance=profile)
+        form = UserProfileUpdateForm(request.POST, request.FILES, instance=profile)
         if form.is_valid():
             form.save()
             return redirect('users:profile')
     else:
-        form = UserProfileForm(instance=profile)
+        form = UserProfileUpdateForm(instance=profile)
 
     context = {'form': form}
     return render(request, 'users/edit_profile.html', context)
@@ -129,11 +146,6 @@ def update_profile_settings(request):
         form = UserSettingsForm(instance=profile)
     context = {'form': form}
     return render(request, 'users/settings.html', context)
-
-
-# Логин пользователя
-def login(request):
-    pass
 
 
 # Выход пользователя

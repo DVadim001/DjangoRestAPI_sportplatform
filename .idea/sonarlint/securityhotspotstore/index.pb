@@ -2,7 +2,7 @@
 J
 sportsplatform/settings.py,7\b\7b5135e7870bed9074673aaee4b899e12f202637
 ?
-users/models.py,f/1/f121007a966dcbe0e6d77b6ca09948108f3edfbb
+users/models.py,f\1\f121007a966dcbe0e6d77b6ca09948108f3edfbb
 >
 users/admin.py,3\e\3ea505836db8ef76dd1c89a43cfc6ee4cd79a896
 >
@@ -43,3 +43,7 @@ S
 #users/templates/users/settings.html,7\b\7b1de0a381efdb265aeaabd55402309163dda404
 S
 #users/templates/users/register.html,7\b\7b48416384df1833e5f6d747439a8eaac912e68d
+@
+users/signals.py,a\0\a0e0150836975a196d6c9d23ebabbcfa31d724e1
+=
+users/apps.py,5\4\547f374cbbeef99e636bc50f0d5b5ba07651acb5

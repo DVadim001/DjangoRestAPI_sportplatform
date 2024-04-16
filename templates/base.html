@@ -29,7 +29,8 @@
                         <li><a href="{% url 'users:register' %}">Регистрация</a></li>
                         <a href="{% url 'users:login' %}">Вход</a>
                     {% else %}
-                        <a href="{% url 'users:profile_view' %}">Профиль</a></p>
+                        <a href="{% url 'users:profile' %}">Профиль</a></p>
+                        <a href="{% url 'users:edit_profile' %}">Редактировать профиль</a>
                         <a href="{% url 'users:logout' %}">Выход</a>
                     {% endif %}
 

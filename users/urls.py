@@ -12,7 +12,8 @@ router.register(r'settings', views.UserSettingsViewSet, basename='usersettings')
 urlpatterns = [
     path('api/', include(router.urls)),
 
-    path('profile/', views.profile_view, name='profile_view'),
+    path('profile/', views.profile_view, name='profile'),
+    path('profile/<int:user_id>', views.profile_view, name='profile_view'),
     path('register/', views.register, name='register'),
     path('change_password/', views.change_password, name='change_password'),
     path('edit_profile/', views.edit_profile, name='edit_profile'),
