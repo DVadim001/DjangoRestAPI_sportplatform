@@ -49,3 +49,7 @@ S
 users/apps.py,5\4\547f374cbbeef99e636bc50f0d5b5ba07651acb5
 \
 ,users/templates/users/permission_denied.html,b\0\b0d36c31ba5011a4f764ba8341938ee708ad1067
+@
+events/models.py,b\4\b43f3d31bab1e3c3aaaefe017b1f7bd74d6670ea
+?
+events/admin.py,2\3\236af2ecaec47c4a092c67690312b83917b3ff7f
