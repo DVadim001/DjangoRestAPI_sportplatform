@@ -33,7 +33,7 @@ def profile_view(request, user_id):
 
     # Проверяем, имеет ли текущий пользователь права на просмотр этой страницы
     if request.user.id != user_profile.user.id and not request.user.is_superuser:
-        return redirect('permission_danied')
+        return render(request, 'users/permission_denied.html')
 
     if request.method == 'POST':
         form = UserProfileUpdateForm(request.POST, request.FILES, instance=user_profile)
@@ -64,7 +64,7 @@ def login(request):
     else:
         form = AuthenticationForm()
     context = {'form': form}
-    return render(request, 'users/login.html', context)
+    return render(request, 'registration/login.html', context)
 
 
 # Регистрация пользователя
@@ -82,6 +82,7 @@ def register(request):
 
 
 # Вывод всех пользователей
+@login_required
 def get_all_users(request):
     users = User.objects.all()
     context = {'users': users}
@@ -92,14 +93,18 @@ def get_all_users(request):
 def search_user_by_filter(request):
     query = request.GET.get('q')
     if query:
-        users = User.objects.filter(Q(username__icontains=query)) | Q(email__icontains=query)
+        users = User.objects.filter(
+            Q(username__icontains=query) |
+            Q(email__icontains=query)
+        )
     else:
         users = User.objects.all()
     context = {'users': users}
-    return render(request, 'users/search_results.html', context)
+    return render(request, 'users/search_result.html', context)
 
 
 # Смена пароля
+@login_required
 def change_password(request):
     if request.method == 'POST':
         form = PasswordChangeForm(data=request.POST, user=request.user)

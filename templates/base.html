@@ -27,16 +27,24 @@
                     <li><a href="{% url 'main' %}">Главная</a></li>
                     {% if not user.is_authenticated %}
                         <li><a href="{% url 'users:register' %}">Регистрация</a></li>
-                        <a href="{% url 'users:login' %}">Вход</a>
+                        <li><a href="{% url 'users:login' %}">Вход</a></li>
                     {% else %}
-                        <a href="{% url 'users:profile' %}">Профиль</a></p>
-                        <a href="{% url 'users:edit_profile' %}">Редактировать профиль</a>
-                        <a href="{% url 'users:logout' %}">Выход</a>
+                        <li><a href="{% url 'users:users_list' %}">Список пользователей</a></li>
+                        <li><a href="{% url 'users:profile_view' request.user.id %}">Профиль</a></li>
+                        <li><a href="{% url 'users:edit_profile' %}">Редактировать профиль</a></li>
+                        <li><a href="{% url 'users:logout' %}">Выход</a></li>
                     {% endif %}
 
                     <!-- Прописать остальные ссылки-->
                 </ul>
             </nav>
+
+            <form method="get" action="{% url 'users:search_user' %}">
+                {% csrf_token %}
+                <input type="text" name="q" placeholder="Поиск...">
+                <button type="submit">Поиск</button>
+            </form>
+
         </header>
 
         <main>

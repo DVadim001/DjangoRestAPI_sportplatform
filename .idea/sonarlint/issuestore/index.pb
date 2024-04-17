@@ -47,3 +47,5 @@ S
 users/signals.py,a\0\a0e0150836975a196d6c9d23ebabbcfa31d724e1
 =
 users/apps.py,5\4\547f374cbbeef99e636bc50f0d5b5ba07651acb5
+\
+,users/templates/users/permission_denied.html,b\0\b0d36c31ba5011a4f764ba8341938ee708ad1067
