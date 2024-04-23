@@ -1,5 +1,7 @@
 from django.shortcuts import render
 from users.models import UserProfile
+from events.models import Event, Participant, EventImage
+from django.db.models import Q
 
 
 def main_view(request):
@@ -13,3 +15,32 @@ def main_view(request):
         # Добавить другие данные в контекст
     }
     return render(request, 'main.html', context)
+
+
+def global_search(request):
+    query = request.GET.get('q', '')
+
+    # Поиск среди пользователей по именам, адресу электронной почты и т.д.
+    user_profiles_results = UserProfile.objects.filter(
+        Q(user__username__icontains=query) |
+        Q(user__email__icontains=query)
+    )
+
+    # Поиск среди событий по имени, описанию и локации
+    events_result = Event.objects.filter(
+        Q(name__incontains=query) |
+        Q(description__incontains=query) |
+        Q(location__incontains=query)
+    )
+
+    # Поиск участников события по имени пользователя
+    participants_results = Participant.objects.filter(
+        Q(user__username__icontains=query)
+    )
+
+    context = {
+        'user_profiles_results': user_profiles_results,
+        'events_result': events_result,
+        'participants_results': participants_results
+    }
+    return render(request, 'search_results.html', context)

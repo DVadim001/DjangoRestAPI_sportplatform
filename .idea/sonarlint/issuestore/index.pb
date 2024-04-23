@@ -55,10 +55,6 @@ S
 events/admin.py,2\3\236af2ecaec47c4a092c67690312b83917b3ff7f
 X
 (events/templates/events/events_list.html,f\c\fcecdf125f280a602afd0f1f7bb3c043c1d09393
-Y
-)events/templates/events/event_detail.html,d\c\dcc37744bc76c7f97deb7ec9f59cd52299c19e53
-W
-'events/templates/events/event_form.html,5\b\5b1ba6373b77f2a044ee372349873decb1907dab
 ?
 events/forms.py,8\3\838a138322aff3058cc73da38a25a6b399e6b46d
 ?
@@ -75,3 +71,5 @@ Z
 *events/templates/events/event_details.html,1\8\187f2fbdfde7f6a9df369d080e4deaadaa6390c7
 >
 events/urls.py,f\7\f728069ce19d7debfb8ae9b8af0449502b7607d8
+L
+templates/search_result.html,b\3\b3f027847a91423fa7e18dd9d8314fce71a73e0b
