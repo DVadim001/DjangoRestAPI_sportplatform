@@ -10,4 +10,10 @@
 <p>Описание: {{ event.description }}</p>
 <p>Организатор: {{ event.organizer }}</p>
 
+<!--Показать кнопки редактирования и удаления только уполномоченным пользователям-->
+{% if request.user == event.organiger or request.user.is_superuser %}
+<a href="{% url 'events:edit_event' event.id %}">Редактировать</a>
+<a href="{% url 'events:event_delete' event.id %}">Удалить</a>
+{% endif %}
+
 {% endblock content %}
