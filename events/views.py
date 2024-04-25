@@ -1,12 +1,11 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from django.db.models import Q
 
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseForbidden
-from  django.contrib import messages
+from django.contrib import messages
 
 from .models import Event, Participant
-from .forms import EventForm
+from .forms import EventForm, ParticipantForm
 
 
 # Создание нового события
@@ -16,7 +15,7 @@ def create_new_event(request):
         form = EventForm(request.POST)
         if form.is_valid():
             event = form.save(commit=False)
-            event.organizer = request.user # Установка создателя события
+            event.organizer = request.user  # Установка создателя события
             event.save()
             return redirect('events:events_list')
     else:
@@ -37,20 +36,6 @@ def category_list(request):
     categories = Event.objects.values('category').distinct()
     context = {'categories': categories}
     return render(request, 'events/category_list.html', context)
-
-
-# Поиск события по заданным параметрам
-def search_event(request):
-    query = request.GET.get('q')
-    if query:
-        events = Event.objects.filter(
-            Q(name__icontains=query) |
-            Q(description__icontains=query)
-        )
-    else:
-        events = Event.objects.none()
-    context = {'events': events}
-    return render(request, 'events/search_results.html', context)
 
 
 # Просмотр деталий конкретного события
@@ -82,17 +67,27 @@ def event_edit(request, event_id):
 @login_required
 def register_for_event(request, event_id):
     event = get_object_or_404(Event, id=event_id)
+    if Participant.objects.filter(event=event, user=request.user).exists():
+        messages.error(request, "Вы уже зарегистрированы на это событие.")
+        return redirect('events:event_details', event_id=event_id)
+
     if request.method == 'POST':
-        # Проверка, зарегистрирован ли пользователь
-        if Participant.objects.filter(event=event, user=request.user).exists():
-            messages.error(request, "Вы уже зарегистрированы на это событие.")
-        else:
-            # Создание записи участника
-            Participant.objects.create(user=request.user, event=event, status='registered')
-        return redirect('events:event_details', event_id=event.id)
+        form = ParticipantForm(request.POST)
+        if form.is_valid():
+            participant = form.save(commit=False)
+            participant.user = request.user
+            participant.event = event
+            participant.save()
+            messages.success(request, "Вы успешно зарегистрировались на событие.")
+            return redirect('events:event_details', event_id=event_id)
     else:
-        context = {'event': event}
-        return render(request, 'events/register_for_event.html', context)
+        form = ParticipantForm()
+
+    context = {
+        'form': form,
+        'event': event
+    }
+    return render(request, 'events/register_for_event.html', context)
 
 
 # Удаление определённого события (только создатель, главные админы и (возможно!) доверенные лица )

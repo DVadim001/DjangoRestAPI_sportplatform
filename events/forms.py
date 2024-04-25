@@ -1,5 +1,5 @@
 from django import forms
-from .models import Event
+from .models import Event, Participant
 
 
 class EventForm(forms.ModelForm):
@@ -22,3 +22,9 @@ class EventForm(forms.ModelForm):
         'description': forms.Textarea(attrs={'class': 'form-control'}),
         'organizer': forms.TextInput(attrs={'class': 'form-control'})
     }
+
+
+class ParticipantForm(forms.ModelForm):
+    class Meta:
+        model = Participant
+        fields = ['status']

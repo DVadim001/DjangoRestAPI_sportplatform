@@ -18,7 +18,7 @@ urlpatterns = [
     path('edit_profile/', views.edit_profile, name='edit_profile'),
     path('settings/', views.update_profile_settings, name='update_profile_settings'),
     path('users_list/', views.get_all_users, name='users_list'),
-    path('search/', views.search_user_by_filter, name='search_user'),
+    # path('search/', views.search_user_by_filter, name='search_user'),
 
     path('login/', auth_views.LoginView.as_view(template_name='registration/login.html'), name='login'),
     path('logout/', views.logout_request, name='logout'),

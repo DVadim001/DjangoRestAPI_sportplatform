@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from users.models import UserProfile
-from events.models import Event, Participant, EventImage
+from events.models import Event, Participant, Tag
 from django.db.models import Q
 
 
@@ -28,10 +28,15 @@ def global_search(request):
 
     # Поиск среди событий по имени, описанию и локации
     events_result = Event.objects.filter(
-        Q(name__incontains=query) |
-        Q(description__incontains=query) |
-        Q(location__incontains=query)
+        Q(name__icontains=query) |
+        Q(description__icontains=query) |
+        Q(location__icontains=query)
     )
+
+    # Поиск событий по тэгам
+    tagged_events_result = Event.objects.filter(
+        Q(tags__name__icontains=query)
+    ).distinct()
 
     # Поиск участников события по имени пользователя
     participants_results = Participant.objects.filter(
@@ -41,6 +46,7 @@ def global_search(request):
     context = {
         'user_profiles_results': user_profiles_results,
         'events_result': events_result,
+        'tagged_events_result': tagged_events_result,
         'participants_results': participants_results
     }
     return render(request, 'search_results.html', context)

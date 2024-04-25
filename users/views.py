@@ -90,17 +90,17 @@ def get_all_users(request):
 
 
 # Поиск пользователя по фильтру (по имени и т.д.)
-def search_user_by_filter(request):
-    query = request.GET.get('q')
-    if query:
-        users = User.objects.filter(
-            Q(username__icontains=query) |
-            Q(email__icontains=query)
-        )
-    else:
-        users = User.objects.all()
-    context = {'users': users}
-    return render(request, 'users/search_result.html', context)
+# def search_user_by_filter(request):
+#     query = request.GET.get('q')
+#     if query:
+#         users = User.objects.filter(
+#             Q(username__icontains=query) |
+#             Q(email__icontains=query)
+#         )
+#     else:
+#         users = User.objects.all()
+#     context = {'users': users}
+#     return render(request, 'users/search_result.html', context)
 
 
 # Смена пароля
