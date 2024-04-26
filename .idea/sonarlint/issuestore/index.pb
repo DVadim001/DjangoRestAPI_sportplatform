@@ -75,3 +75,5 @@ L
 templates/search_result.html,b\3\b3f027847a91423fa7e18dd9d8314fce71a73e0b
 _
 /events/templates/events/register_for_event.html,e\b\eb6fd0eefe070588179d00d424d0988375a5f3e0
+A
+events/signals.py,e\f\ef5d1c5c2a2a971e5e8e5b7d786393395c3d668c

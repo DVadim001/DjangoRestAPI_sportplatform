@@ -3,7 +3,19 @@
 {% block title %}Профиль пользователя{% endblock title %}
 
 {% block content %}
+
 <h1>Профиль пользователя</h1>
+
+<!--Уведомления пользователей-->
+{% if user_notifications %}
+<div class="notifications">
+    {% for notification in user_notifications %}
+    <div class="notification {{ 'new' if not notification.is_seen else '' }}">
+        {{ notification.message }}
+    </div>
+    {% endfor %}
+</div>
+{% endif %}
 
 <div>
     <h2>Контактные данные:</h2>

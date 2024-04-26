@@ -48,3 +48,17 @@ class EventTag(models.Model):
 
     def __str__(self):
         return f'{self.tag.name} associated with {self.event.name}'
+
+
+class Notification(models.Model):
+    # Тип уведомления, например: 'event_remainder', 'new_event', 'update' и т.д.
+    notification_type = models.CharField(max_length=50)
+    to_user = models.ForeignKey(User, related_name='notifications', on_delete=models.CASCADE)
+    from_user = models.ForeignKey(User, null=True, blank=True, on_delete=models.CASCADE)
+    event = models.ForeignKey('Event', related_name='notifications', on_delete=models.CASCADE, null=True, blank=True)
+    date = models.DateTimeField(auto_now_add=True)
+    text_preview = models.CharField(max_length=90, blank=True)
+    is_seen = models.BooleanField(default=False)
+
+    def __str__(self):
+        return f'Уведомление для {self.to_user.username} - {self.notification_type}'

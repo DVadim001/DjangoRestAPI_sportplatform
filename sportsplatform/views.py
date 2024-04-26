@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from users.models import UserProfile
-from events.models import Event, Participant, Tag
+from events.models import Event, Participant
 from django.db.models import Q
 
 
