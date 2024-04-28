@@ -12,7 +12,7 @@ J
 R
 "users/templates/users/profile.html,e\b\ebd5a398efd4000eefda231f61c2cb0d93a1ceac
 F
-sportsplatform/urls.py,9\f\9f2b884a0145de2c6cd0c8f8f9c7121d7c6aa609
+sportsplatform/urls.py,9/f/9f2b884a0145de2c6cd0c8f8f9c7121d7c6aa609
 =
 users/urls.py,7\e\7ebb6dc32a2768a7e73ce1c83409f9c85bd4ad6a
 C
