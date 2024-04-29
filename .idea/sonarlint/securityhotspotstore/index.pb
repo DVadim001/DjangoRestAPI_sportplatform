@@ -97,3 +97,11 @@ j
 :schedules/templates/schedules/schedule_confirm_delete.html,c\c\cc645c77bb60269cb287482b0ea4e1e3201ae26f
 H
 schedules/serializers.py,2\b\2bf2743e329b1560f8a405bcd2a2b915fbfa8f15
+G
+communication/models.py,5\9\59528b0257d8db1b1caf11eee0c212bae42409e2
+F
+communication/admin.py,a\8\a803b92ce4999ced39449935076f2df0ffd01324
+L
+communication/serializers.py,8\d\8d6a7f45157e4ef85174532977e9fe557642a729
+F
+communication/views.py,e\d\ed1fb70cbedab261c09fc96704cf6cf6a1cd5023
