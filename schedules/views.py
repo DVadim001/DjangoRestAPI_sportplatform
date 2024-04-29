@@ -1,8 +1,21 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
 
-from .models import Schedule
+from .models import Schedule, Category
 from .forms import ScheduleForm
+from .serializers import ScheduleSerializer, CategorySerializer
+
+from rest_framework import viewsets
+
+
+class ScheduleViewSet(viewsets.ModelViewSet):
+    queryset = Schedule.objects.all()
+    serializer_class = ScheduleSerializer
+
+
+class CategoryViewSet(viewsets.ModelViewSet):
+    queryset = Category.objects.all()
+    serializer_class = CategorySerializer
 
 
 # Вывод всех планирований
