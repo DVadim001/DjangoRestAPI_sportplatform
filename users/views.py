@@ -121,7 +121,7 @@ def edit_profile(request):
         form = UserProfileUpdateForm(request.POST, request.FILES, instance=profile)
         if form.is_valid():
             form.save()
-            return redirect('users:profile')
+            return redirect('users:profile_view')
     else:
         form = UserProfileUpdateForm(instance=profile)
 
