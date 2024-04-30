@@ -105,3 +105,27 @@ L
 communication/serializers.py,8\d\8d6a7f45157e4ef85174532977e9fe557642a729
 F
 communication/views.py,e\d\ed1fb70cbedab261c09fc96704cf6cf6a1cd5023
+g
+7communication/templates/communication/message_list.html,7\0\70874ca8db689e453591b49e14ef087a649e6bce
+i
+9communication/templates/communication/message_detail.html,0\a\0af15ceeb17a528afaea7bd08b3575b914ceda7d
+P
+ communication/templates/forms.py,8\9\8971dd2ff4dc955b8ec16885f88ca043a8cdcd8d
+g
+7communication/templates/communication/message_form.html,7\a\7a5b01f8c54658c0c6770e4f2d0ec45dd9458079
+l
+<communication/templates/communication/notification_list.html,b\2\b2445b9c928ff9819c1f568813513b4ee068e6ba
+H
+communication/signals.py,c\e\ce70b87a73228c4d3b065726e5d0ad0d99576915
+D
+schedules/signals.py,3\b\3baf7bf3160b38ae03633838055b2b540616cc73
+E
+communication/apps.py,5\6\56be99b27065e546ef730085890c979ed0c2153c
+A
+schedules/apps.py,c\9\c9d107fdb267a6f3a782df3f0aa3091f82c364fe
+E
+communication/urls.py,3\5\3555d33f4e355cf2b4a22b2b2fed9a6b829558cf
+F
+communication/forms.py,e\6\e6b417f0a89d63744793a22825149784d60826b7
+v
+Fcommunication/templates/communication/notification_confirm_delete.html,7\5\759ccd21da05b4b519efcf9e8cf86f02d0e6a3f8

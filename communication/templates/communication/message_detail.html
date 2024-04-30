@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h1>Детали сообщения</h1>
+<p><strong>Отправитель:</strong> {{ message.sender.username }} </p>
+<p><strong>Получатель:</strong>{{ message.recipient.username }}</p>
+<p><strong>Дата отправки:</strong>{{ message.send_at|date:"d M Y H:i" }}</p>
+<p><strong>Сообщение:</strong>{{ message.content }}</p>
+
+{% endblock content %}

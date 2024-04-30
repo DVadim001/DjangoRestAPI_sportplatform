@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>Подтверждение удаления уведомления</h1>
+<p>Вы уверены, что хотите удалить это уведомление?</p>
+<form method="post">
+    {% csrf_token %}
+    <button type="submit">Удалить</button>
+    <a href="{% url 'notification_list' %}">Отмена</a>
+</form>
+{% endblock content %}

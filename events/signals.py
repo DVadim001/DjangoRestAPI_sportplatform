@@ -10,7 +10,7 @@ def event_created(sender, instance, created, **kwargs):
         # Отправляем увеломление всем пользователям о новом событии
         users = User.objects.all()
         for user in users:
-            Notification.objects.creste(
+            Notification.objects.create(
                 notification_type='new_event',
                 to_user=user,
                 from_user=instance.organizer,

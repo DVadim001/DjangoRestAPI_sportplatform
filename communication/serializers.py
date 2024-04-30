@@ -1,10 +1,11 @@
 from rest_framework import serializers
 from .models import Message, Notification
 
+
 class MessageSerializer(serializers.ModelSerializer):
     class Meta:
         model = Message
-        fields = '__all__'
+        fields = ['sender', 'receiver', 'content', 'send_at']
 
 
 class NotificationSerializer(serializers.ModelSerializer):
