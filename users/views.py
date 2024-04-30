@@ -6,11 +6,11 @@ from django.contrib.auth.forms import PasswordChangeForm, AuthenticationForm, Us
 from django.contrib.auth.decorators import login_required
 
 from django.shortcuts import render, redirect, get_object_or_404
-from django.db.models import Q
 
 from .forms import CustomUserCreationForm, UserProfileUpdateForm, UserSettingsForm
 from .models import UserProfile
 from .serializers import UserProfileSerializer, UserSettingsSerializer
+from communication.models import Message, Notification
 
 from rest_framework import viewsets
 
@@ -35,6 +35,9 @@ def profile_view(request, user_id):
     if request.user.id != user_profile.user.id and not request.user.is_superuser:
         return render(request, 'users/permission_denied.html')
 
+    messages_received = Message.objects.filter(recipient=user_profile.user)
+    notifications = Notification.objects.filter(user=user_profile.user)
+
     if request.method == 'POST':
         form = UserProfileUpdateForm(request.POST, request.FILES, instance=user_profile)
         if form.is_valid():
@@ -45,7 +48,9 @@ def profile_view(request, user_id):
 
     context = {
         'form': form,
-        'user_profile': user_profile
+        'user_profile': user_profile,
+        'messages_received': messages_received,
+        'notifications': notifications
     }
     return render(request, 'users/profile.html', context)
 
@@ -87,20 +92,6 @@ def get_all_users(request):
     users = User.objects.all()
     context = {'users': users}
     return render(request, 'users/users_list.html', context)
-
-
-# Поиск пользователя по фильтру (по имени и т.д.)
-# def search_user_by_filter(request):
-#     query = request.GET.get('q')
-#     if query:
-#         users = User.objects.filter(
-#             Q(username__icontains=query) |
-#             Q(email__icontains=query)
-#         )
-#     else:
-#         users = User.objects.all()
-#     context = {'users': users}
-#     return render(request, 'users/search_result.html', context)
 
 
 # Смена пароля

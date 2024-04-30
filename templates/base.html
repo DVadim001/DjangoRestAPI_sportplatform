@@ -39,7 +39,7 @@
                 </ul>
             </nav>
 
-            <form method="get" action="{% url 'users:search_user' %}">
+            <form method="get" action="{% url 'global_search' %}">
                 {% csrf_token %}
                 <input type="text" name="q" placeholder="Поиск...">
                 <button type="submit">Поиск</button>

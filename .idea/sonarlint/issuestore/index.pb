@@ -12,7 +12,7 @@ J
 R
 "users/templates/users/profile.html,e\b\ebd5a398efd4000eefda231f61c2cb0d93a1ceac
 F
-sportsplatform/urls.py,9/f/9f2b884a0145de2c6cd0c8f8f9c7121d7c6aa609
+sportsplatform/urls.py,9\f\9f2b884a0145de2c6cd0c8f8f9c7121d7c6aa609
 =
 users/urls.py,7\e\7ebb6dc32a2768a7e73ce1c83409f9c85bd4ad6a
 C
@@ -129,3 +129,21 @@ F
 communication/forms.py,e\6\e6b417f0a89d63744793a22825149784d60826b7
 v
 Fcommunication/templates/communication/notification_confirm_delete.html,7\5\759ccd21da05b4b519efcf9e8cf86f02d0e6a3f8
+B
+analytics/admin.py,4\5\45d39a619455772becdf3e5a65aa56da463ef770
+A
+analytics/apps.py,2\a\2a3b8a1a070be4151bd516948e4d6a29cdc7d91a
+C
+analytics/models.py,5\8\58c0a5534f1211677f159ba004d788a504e59243
+H
+analytics/serializers.py,b\3\b3ec0cd03764ba96380b4fe821380c73b00296dd
+B
+analytics/tests.py,5\5\55e552ebd2232db1ba2818c2061ec24c976f0c47
+B
+analytics/views.py,3\e\3e8ca09dfb7f08713ff69dd689e200d0fc7d7e1a
+F
+communication/tests.py,9\4\94d0e1c4c7ce7e03de0127e197e35fce79c85e41
+|
+Lusers/migrations/0002_rename_club_membership_userprofile_club_memberships.py,a\7\a739bbb3780e88481698a212eebee55d70a2e67f
+k
+;users/migrations/0003_alter_userprofile_address_and_more.py,f\0\f0ca44051ff063921af4047fff4d01eec932a81c

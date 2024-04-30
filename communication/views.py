@@ -42,6 +42,7 @@ def message_detail(request, pk):
     return render(request, 'communication/message_detail.html', context)
 
 
+@login_required
 # Создание сообщения
 def message_create(request):
     if request.method == 'POST':
@@ -53,7 +54,7 @@ def message_create(request):
             return redirect('communication:message_detail', pk=message.pk)
     else:
         form = MessageForm()
-    context = {'form': form}
+    context = {'form': form, 'form_title': 'Написать сообщение'}
     return render(request, 'communication/message_form.html', context)
 
 

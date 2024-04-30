@@ -12,6 +12,7 @@ urlpatterns += i18n_patterns(
     path('users/', include('users.urls',  namespace='users')),
     path('', views.main_view, name='main'),  # URL для главной страницы
     path('search/', views.global_search, name='global_search'),
+    path('communication/', include('communication.urls')),
     prefix_default_language=False,
 
 )

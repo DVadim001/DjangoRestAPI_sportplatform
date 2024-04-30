@@ -11,4 +11,4 @@ class MessageForm(forms.ModelForm):
 class NotificationForm(forms.ModelForm):
     class Meta:
         model = Notification
-        fields = ['to_user', 'from_user', 'message_type', 'message', 'read']
+        fields = ['message', 'is_seen']

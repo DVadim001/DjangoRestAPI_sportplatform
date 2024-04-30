@@ -13,9 +13,9 @@ urlpatterns = [
     path('api/', include(router.urls)),
     path('messages/', views.message_list, name='message_list'),
     path('messages/create/', views.message_create, name='message_create'),
-    path('messages/<int:message_id/>', views.message_detail, name='message_detail'),
-    path('messages/<int:message_id/>/update/', views.message_update, name='message_update'),
-    path('messages/<int:message_id/>/delete/', views.message_delete, name='message_delete'),
+    path('messages/<int:message_id>/', views.message_detail, name='message_detail'),
+    path('messages/<int:message_id>/update/', views.message_update, name='message_update'),
+    path('messages/<int:message_id>/delete/', views.message_delete, name='message_delete'),
     path('notifications/', views.notification_list, name='notification_list'),
-    path('notifications/<int:notification_id/>delete/', views.notification_delete, name='notification_delete'),
+    path('notifications/<int:notification_id>/delete/', views.notification_delete, name='notification_delete'),
 ]

@@ -6,11 +6,24 @@
 
 <h1>Профиль пользователя</h1>
 
+<!--Сообщения пользователя-->
+<div>
+    <h2>Ваши сообщения</h2>
+    <ul>
+        {% for message in user.messages_received.all %}
+        <li>{{ message.sender.username }}: {{ message.text }}</li>
+        {% endfor %}
+    </ul>
+
+    <a href="{% url 'communication:message_create' %}">Отправить сообщение</a>
+</div>
+
+
 <!--Уведомления пользователей-->
 {% if user_notifications %}
 <div class="notifications">
     {% for notification in user_notifications %}
-    <div class="notification {{ 'new' if not notification.is_seen else '' }}">
+    <div class="notification {% if not notification.is_seen %}new{% endif %}">
         {{ notification.message }}
     </div>
     {% endfor %}
