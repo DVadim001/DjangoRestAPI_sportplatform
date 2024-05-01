@@ -1,5 +1,7 @@
 from django.db import models
 from django.conf import settings
+from phonenumber_field.modelfields import PhoneNumberField
+from django.contrib.auth.models import User
 
 
 def default_privacy_settings():
@@ -9,8 +11,11 @@ def default_privacy_settings():
 class UserProfile(models.Model):
     user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
 
+    # О себе
+    bio = models.TextField('О себе', blank=True)
+
     # Контактные данные
-    phone_number = models.CharField(max_length=15, blank=True, default='')
+    phone_number = PhoneNumberField()
     email = models.EmailField(blank=True, null=True)
     address = models.TextField(blank=True, default='')
 
@@ -42,7 +47,7 @@ class UserProfile(models.Model):
     club_memberships = models.TextField(blank=True, default='')
 
     # Подписки и членство
-    subscriptions = models.TextField(blank=True, default='')
+    subscriptions = models.ManyToManyField(User, related_name='followers', blank=True)
 
     # Настройка конфеденциальности
     privacy_settings = models.JSONField(blank=True, default=default_privacy_settings)

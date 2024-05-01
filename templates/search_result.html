@@ -5,6 +5,7 @@
 {% endblock title %}
 
 {% block content %}
+
 <h1>Результаты поиска</h1>
 
 {% if user_profiles or events or participants %}
@@ -17,6 +18,7 @@
         </ul>
     {% else %}
         <p>Пользователи не найдены</p>
+    {% endif %}
 
 <h2>Найденные события</h2>
     {% if events %}
@@ -43,4 +45,5 @@
 {% else %}
     <p>По вашему запросу ничего не найдено.</p>
 {% endif %}
+
 {% endblock %}

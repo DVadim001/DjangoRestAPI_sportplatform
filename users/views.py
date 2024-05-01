@@ -13,6 +13,7 @@ from .serializers import UserProfileSerializer, UserSettingsSerializer
 from communication.models import Message, Notification
 
 from rest_framework import viewsets
+from phonenumber_field.phonenumber import to_python
 
 
 class UserProfileViewSet(viewsets.ModelViewSet):
@@ -23,6 +24,21 @@ class UserProfileViewSet(viewsets.ModelViewSet):
 class UserSettingsViewSet(viewsets.ModelViewSet):
     queryset = UserProfile.objects.all()
     serializer_class = UserSettingsSerializer
+
+
+# Страна по коду телефону
+def view_country_by_phone(request):
+    user_profile = UserProfile.objects.get(user=request.user)  # Получаем профиль пользователя
+    phone_number = to_python(user_profile.phone_number)  # Преобразуем номер телефона
+    country = None
+    if phone_number and phone_number.is_valid():
+        country = phone_number.region_code_for_number()  # Получаем код страны
+
+    context = {
+        'country': country,
+        'phone_number': phone_number
+    }
+    return render(request, 'users:edit_profile', context)
 
 
 # Просмотр профиля пользователя
@@ -121,7 +137,7 @@ def edit_profile(request):
         form = UserProfileUpdateForm(request.POST, request.FILES, instance=profile)
         if form.is_valid():
             form.save()
-            return redirect('users:profile_view')
+            return redirect('users:profile_view', user_id=request.user.id)
     else:
         form = UserProfileUpdateForm(instance=profile)
 

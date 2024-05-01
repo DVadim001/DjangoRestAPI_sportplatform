@@ -17,6 +17,7 @@ def main_view(request):
     return render(request, 'main.html', context)
 
 
+# Поиск общий
 def global_search(request):
     query = request.GET.get('q', '')
 
@@ -49,4 +50,4 @@ def global_search(request):
         'tagged_events_result': tagged_events_result,
         'participants_results': participants_results
     }
-    return render(request, 'search_results.html', context)
+    return render(request, 'search_result.html', context)

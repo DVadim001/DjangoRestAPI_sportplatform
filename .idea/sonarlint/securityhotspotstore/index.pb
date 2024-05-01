@@ -109,8 +109,6 @@ g
 7communication/templates/communication/message_list.html,7\0\70874ca8db689e453591b49e14ef087a649e6bce
 i
 9communication/templates/communication/message_detail.html,0\a\0af15ceeb17a528afaea7bd08b3575b914ceda7d
-P
- communication/templates/forms.py,8\9\8971dd2ff4dc955b8ec16885f88ca043a8cdcd8d
 g
 7communication/templates/communication/message_form.html,7\a\7a5b01f8c54658c0c6770e4f2d0ec45dd9458079
 l
@@ -147,3 +145,21 @@ F
 Lusers/migrations/0002_rename_club_membership_userprofile_club_memberships.py,a\7\a739bbb3780e88481698a212eebee55d70a2e67f
 k
 ;users/migrations/0003_alter_userprofile_address_and_more.py,f\0\f0ca44051ff063921af4047fff4d01eec932a81c
+=
+clubs/urls.py,4\9\49fa4dd9c80a24d62027890e814699fc24e8fd26
+>
+clubs/forms.py,7\d\7d7ce328dedac22d80e5b07654ffaf09db4475e7
+D
+clubs/serializers.py,2\d\2db6673ba030b1b0cdffee84c2734cce972556df
+?
+clubs/models.py,d\f\df8409bafb5e99f8e06ece8ed83109317f1215e5
+>
+clubs/admin.py,4\c\4c24b10c84bab2f4999a6670d957ccd187c7b9be
+>
+clubs/views.py,5\9\59fd50899b2af1b6fbb7d96331e181c76139b5a3
+T
+$clubs/templates/clubs/club_list.html,5\f\5f3557bd9278a7332a4329cf5b4b39fa62f1bd7a
+V
+&clubs/templates/clubs/club_detail.html,e\f\ef54a549b4a91792a754e9165985fbc2319b7e37
+T
+$clubs/templates/clubs/club_form.html,5\5\556bef828eb429eb69bb72b88fb31a6194a66f58

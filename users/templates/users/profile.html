@@ -38,6 +38,7 @@
 </div>
 
 <div>
+    <p>О себе: {{ user_profile.bio }}</p>
     <p>Дата рождения: {{ user_profile.birth_date }}</p>
     <p>Пол: {{ user_profile.gender }}</p>
     <p>Рост: {{ user_profile.height }}</p>
@@ -52,6 +53,17 @@
 <div>
     <h2>Предпочтения:</h2>
     <p>{{ user_profile.preferred_sports }}</p>
+</div>
+
+<div>
+    <h3>Подписки:</h3>
+    <ul>
+        {% for subscriber in user_profile.subscriptions.all %}
+            <li><a href="{% url 'users:profile_view' subscriber.id %}">{{ subscriber.username }}</a></li>
+        {% empty %}
+            <li>Нет подписок.</li>
+        {% endfor %}
+    </ul>
 </div>
 
 
