@@ -1,10 +1,8 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% extends 'base.html' %}
 
-</body>
-</html>
+{% block content %}
+<h1>{{ club.name }}</h1>
+<p>{{ club.description }}</p>
+<a href="{% url 'clubs:edit_club' club.id %}">Редактировать</a>
+<a href="{% url 'clubs:delete_club' club.id %}">Удалить</a>
+{% endblock content %}

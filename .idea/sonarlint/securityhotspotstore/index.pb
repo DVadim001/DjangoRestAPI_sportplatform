@@ -35,8 +35,6 @@ Z
 *users/templates/users/change_password.html,4\d\4d7b0ab82256d236a096726add7c85ea6dfccf22
 U
 %users/templates/users/users_list.html,4\6\46f87150668f36fc2f5d4d3299eb4f820e0543b9
-X
-(users/templates/users/search_result.html,d\f\dfda87a0c1eb33ba12609ace5532ce46e9696d28
 W
 'users/templates/users/edit_profile.html,9\6\96872103bda4ebee5e97657c94b55f4be214d145
 S
@@ -163,3 +161,5 @@ V
 &clubs/templates/clubs/club_detail.html,e\f\ef54a549b4a91792a754e9165985fbc2319b7e37
 T
 $clubs/templates/clubs/club_form.html,5\5\556bef828eb429eb69bb72b88fb31a6194a66f58
+^
+.clubs/templates/clubs/club_confirm_delete.html,6\9\699c8fb15d727bba545eecc81ee1e2d5745479f1
