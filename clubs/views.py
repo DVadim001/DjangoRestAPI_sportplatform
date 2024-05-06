@@ -12,7 +12,7 @@ class ClubViewSet(viewsets.ModelViewSet):
 
 
 class MemberViewSet(viewsets.ModelViewSet):
-    queryset = MembershipSerializer.objects.all()
+    queryset = Membership.objects.all()
     serializer_class = MembershipSerializer
 
 

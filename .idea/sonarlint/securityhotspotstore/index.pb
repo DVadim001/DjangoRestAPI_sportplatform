@@ -158,4 +158,16 @@ $clubs/templates/clubs/club_form.html,5\5\556bef828eb429eb69bb72b88fb31a6194a66
 ^
 .clubs/templates/clubs/club_confirm_delete.html,6\9\699c8fb15d727bba545eecc81ee1e2d5745479f1
 @
-clubs/signals.py,6\a\6a9d05897c315c3c0cb052a9e21faa83d896319f
+results/forms.py,d\7\d750874ca2873ae4e2c523d5b0d1dba09a75cc04
+?
+results/urls.py,f\3\f327ea2d35c8fecd66c428cdb28775cbcd22a422
+A
+results/models.py,0\f\0f10218a3f1817fc391ef30ebc8ac1223e91450e
+@
+results/views.py,5\3\5363ed189e0694cc7f94664b2f00688a9e28e053
+Z
+*results/templates/results/result_list.html,d\5\d504c6e4dc8117da82c8fe3658c18584d447a1b2
+\
+,results/templates/results/event_results.html,2\3\23a866bc41128e01bcc4a6b2a14ed073d3a8d189
+E
+events/serializers.py,7\3\73d58a95cb441f0b97ad88773e79d631651b4e03

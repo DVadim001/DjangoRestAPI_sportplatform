@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+
+<h1>Все результаты</h1>
+{% for result in results %}
+    <p>{{ result.participant.username }} scored {{ result.score }} in {{ result.event.name }}</p>
+{% endfor %}
+
+{% endblock content %}
