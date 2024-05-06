@@ -11,6 +11,7 @@ from .forms import CustomUserCreationForm, UserProfileUpdateForm, UserSettingsFo
 from .models import UserProfile
 from .serializers import UserProfileSerializer, UserSettingsSerializer
 from communication.models import Message, Notification
+from clubs.models import Membership
 
 from rest_framework import viewsets
 from phonenumber_field.phonenumber import to_python
@@ -44,15 +45,22 @@ def view_country_by_phone(request):
 # Просмотр профиля пользователя
 @login_required
 def profile_view(request, user_id):
-    # Получаем профиль пользователя или возвращаем 404, если он не найден
-    user_profile = get_object_or_404(UserProfile, user__id=user_id)
+    # Используем get_object_or_404 для получения объекта User
+    user = get_object_or_404(User, pk=user_id)
+
+    # Попытаемся получить или создать UserProfile
+    user_profile, created = UserProfile.objects.get_or_create(user=user)
 
     # Проверяем, имеет ли текущий пользователь права на просмотр этой страницы
-    if request.user.id != user_profile.user.id and not request.user.is_superuser:
+    if request.user.id != user.id and not request.user.is_superuser:
         return render(request, 'users/permission_denied.html')
 
-    messages_received = Message.objects.filter(recipient=user_profile.user)
-    notifications = Notification.objects.filter(user=user_profile.user)
+    # Получаем сообщения и уведомления для пользователя
+    messages_received = Message.objects.filter(recipient=user)
+    notifications = Notification.objects.filter(user=user)
+
+    # Получаем клубы, учитывая связанные объекты для оптимизации запросов
+    clubs = Membership.objects.filter(user=user).select_related('club')
 
     if request.method == 'POST':
         form = UserProfileUpdateForm(request.POST, request.FILES, instance=user_profile)
@@ -66,7 +74,8 @@ def profile_view(request, user_id):
         'form': form,
         'user_profile': user_profile,
         'messages_received': messages_received,
-        'notifications': notifications
+        'notifications': notifications,
+        'clubs': clubs
     }
     return render(request, 'users/profile.html', context)
 
@@ -94,6 +103,7 @@ def register(request):
         form = CustomUserCreationForm(request.POST)
         if form.is_valid():
             user = form.save()
+            UserProfile. objects.create(user=user)
             auth_login(request, user)
             return redirect('users:profile')
     else:
@@ -128,10 +138,8 @@ def change_password(request):
 # Редактирование профиля
 @login_required
 def edit_profile(request):
-    try:
-        profile = request.user.userprofile
-    except UserProfile.DoesNotExist:
-        profile = UserProfile(user=request.user)
+    # Получаем или создаём профиль пользователя, усли он не существует
+    profile, create = UserProfile.objects.get_or_create(user=request.user)
 
     if request.method == 'POST':
         form = UserProfileUpdateForm(request.POST, request.FILES, instance=profile)

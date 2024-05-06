@@ -5,6 +5,7 @@ from .models import UserProfile
 from django.forms import DateInput, Textarea
 from django.utils import timezone
 from phonenumber_field.formfields import PhoneNumberField
+from clubs.models import Club
 
 
 class CustomUserCreationForm(UserCreationForm):
@@ -41,10 +42,10 @@ class UserProfileUpdateForm(forms.ModelForm):
             'preferred_sports',
             'medical_information',
             'equipment',
-            'club_memberships',
             'subscriptions'
         ]
         widgets = {
+            'club_memberships': forms.CheckboxSelectMultiple(),
             'birth_date': DateInput(attrs={
                 'type': 'date',
                 'max': timezone.now().date().isoformat()
@@ -55,7 +56,9 @@ class UserProfileUpdateForm(forms.ModelForm):
 
         def __init__(self, *args, **kwargs):
             super(UserProfileUpdateForm, self).__init__(*args, **kwargs)
-            self.fields['subscriptions'].queryset = User.objects.all().exclude(id=self.instance.user.id)
+            self.fields['club_membership'].queryset = Club.objects.all()
+            if self.instance:
+                self.fields['subscriptions'].queryset = User.objects.all().exclude(id=self.instance.user.id)
 
 
 class UserSettingsForm(forms.ModelForm):

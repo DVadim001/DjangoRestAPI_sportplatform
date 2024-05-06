@@ -3,7 +3,7 @@
 {% block content %}
 
 <h1>Клубы</h1>
-<a href="{% url 'clubs:create_club' %}">Создать новый клуб</a>
+<a href="{% url 'clubs:club_create' %}">Создать новый клуб</a>
 <ul>
     {% for club in clubs %}
         <li>

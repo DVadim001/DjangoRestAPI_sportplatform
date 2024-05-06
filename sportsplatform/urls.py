@@ -13,6 +13,7 @@ urlpatterns += i18n_patterns(
     path('', views.main_view, name='main'),  # URL для главной страницы
     path('search/', views.global_search, name='global_search'),
     path('communication/', include('communication.urls')),
+    path('clubs/', include('clubs.urls')),
     prefix_default_language=False,
 
 )

@@ -3,6 +3,6 @@
 {% block content %}
 <h1>{{ club.name }}</h1>
 <p>{{ club.description }}</p>
-<a href="{% url 'clubs:edit_club' club.id %}">Редактировать</a>
-<a href="{% url 'clubs:delete_club' club.id %}">Удалить</a>
+<a href="{% url 'clubs:club_edit' club.id %}">Редактировать</a>
+<a href="{% url 'clubs:club_delete' club.id %}">Удалить</a>
 {% endblock content %}

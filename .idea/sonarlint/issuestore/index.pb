@@ -8,7 +8,7 @@ J
 >
 users/forms.py,b\a\ba33783358ae7b013e1a1c262584bd384ee7903c
 >
-users/views.py,5/f/5fc54a09665485d90807a8e72925d27743a0db75
+users/views.py,5\f\5fc54a09665485d90807a8e72925d27743a0db75
 R
 "users/templates/users/profile.html,e\b\ebd5a398efd4000eefda231f61c2cb0d93a1ceac
 F
@@ -41,8 +41,6 @@ S
 #users/templates/users/settings.html,7\b\7b1de0a381efdb265aeaabd55402309163dda404
 S
 #users/templates/users/register.html,7\b\7b48416384df1833e5f6d747439a8eaac912e68d
-@
-users/signals.py,a\0\a0e0150836975a196d6c9d23ebabbcfa31d724e1
 =
 users/apps.py,5\4\547f374cbbeef99e636bc50f0d5b5ba07651acb5
 \
@@ -139,10 +137,6 @@ B
 analytics/views.py,3\e\3e8ca09dfb7f08713ff69dd689e200d0fc7d7e1a
 F
 communication/tests.py,9\4\94d0e1c4c7ce7e03de0127e197e35fce79c85e41
-|
-Lusers/migrations/0002_rename_club_membership_userprofile_club_memberships.py,a\7\a739bbb3780e88481698a212eebee55d70a2e67f
-k
-;users/migrations/0003_alter_userprofile_address_and_more.py,f\0\f0ca44051ff063921af4047fff4d01eec932a81c
 =
 clubs/urls.py,4\9\49fa4dd9c80a24d62027890e814699fc24e8fd26
 >
@@ -163,3 +157,5 @@ T
 $clubs/templates/clubs/club_form.html,5\5\556bef828eb429eb69bb72b88fb31a6194a66f58
 ^
 .clubs/templates/clubs/club_confirm_delete.html,6\9\699c8fb15d727bba545eecc81ee1e2d5745479f1
+@
+clubs/signals.py,6\a\6a9d05897c315c3c0cb052a9e21faa83d896319f
