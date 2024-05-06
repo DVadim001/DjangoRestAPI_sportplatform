@@ -1,6 +1,19 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from .models import Club, Membership
 from .forms import ClubForm
+from .serializers import ClubSerializer, MembershipSerializer
+
+from rest_framework import viewsets
+
+
+class ClubViewSet(viewsets.ModelViewSet):
+    queryset = Club.objects.all()
+    serializer_class = ClubSerializer
+
+
+class MemberViewSet(viewsets.ModelViewSet):
+    queryset = MembershipSerializer.objects.all()
+    serializer_class = MembershipSerializer
 
 
 # Просмотр списка клубов
