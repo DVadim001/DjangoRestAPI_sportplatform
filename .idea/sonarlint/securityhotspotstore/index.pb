@@ -171,3 +171,9 @@ Z
 ,results/templates/results/event_results.html,2\3\23a866bc41128e01bcc4a6b2a14ed073d3a8d189
 E
 events/serializers.py,7\3\73d58a95cb441f0b97ad88773e79d631651b4e03
+F
+results/serializers.py,6\0\608b47c56b719cd464749e7ee8010fb66aedcf50
+@
+results/admin.py,e\b\eb6b74acf71d918ae3dd10f3a18466a0b8c2d517
+?
+results/apps.py,4\8\4849c15c7516dee9ae8abb5af75dda252f9891b7

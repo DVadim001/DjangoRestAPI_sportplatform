@@ -4,9 +4,9 @@ from rest_framework.routers import DefaultRouter
 
 app_name = 'results'
 
-router = DefaultRouter
-router.register(r'events', EventViewSet)
-router.register(r'results', ResultViewSet)
+router = DefaultRouter()
+router.register(r'events', views.EventViewSet, basename='events')
+router.register(r'results', views.ResultViewSet, basename='results')
 
 urlpatterns = [
     path('', views.result_list, name='result_list'),

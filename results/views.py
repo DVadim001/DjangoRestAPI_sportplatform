@@ -9,7 +9,7 @@ class EventViewSet(viewsets.ModelViewSet):
     serializer_class = EventSerializer
 
 
-class ResultSerializer(viewsets.ModelViewSet):
+class ResultViewSet(viewsets.ModelViewSet):
     queryset = Result.objects.all()
     serializer_class = ResultSerializer
 

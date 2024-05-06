@@ -14,6 +14,7 @@ urlpatterns += i18n_patterns(
     path('search/', views.global_search, name='global_search'),
     path('communication/', include('communication.urls')),
     path('clubs/', include('clubs.urls')),
+    path('results/', include('results.urls')),
     prefix_default_language=False,
 
 )
