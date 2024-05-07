@@ -164,7 +164,7 @@ $clubs/templates/clubs/club_form.html,5\5\556bef828eb429eb69bb72b88fb31a6194a66
 A
 results/models.py,0\f\0f10218a3f1817fc391ef30ebc8ac1223e91450e
 @
-results/views.py,5\3\5363ed189e0694cc7f94664b2f00688a9e28e053
+results/views.py,5/3/5363ed189e0694cc7f94664b2f00688a9e28e053
 Z
 *results/templates/results/result_list.html,d\5\d504c6e4dc8117da82c8fe3658c18584d447a1b2
 \
