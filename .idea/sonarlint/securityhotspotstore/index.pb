@@ -164,7 +164,7 @@ $clubs/templates/clubs/club_form.html,5\5\556bef828eb429eb69bb72b88fb31a6194a66
 A
 results/models.py,0\f\0f10218a3f1817fc391ef30ebc8ac1223e91450e
 @
-results/views.py,5/3/5363ed189e0694cc7f94664b2f00688a9e28e053
+results/views.py,5\3\5363ed189e0694cc7f94664b2f00688a9e28e053
 Z
 *results/templates/results/result_list.html,d\5\d504c6e4dc8117da82c8fe3658c18584d447a1b2
 \
@@ -177,3 +177,17 @@ F
 results/admin.py,e\b\eb6b74acf71d918ae3dd10f3a18466a0b8c2d517
 ?
 results/apps.py,4\8\4849c15c7516dee9ae8abb5af75dda252f9891b7
+A
+payments/views.py,1\7\17252b947d411a7c56b50d6133213814949db010
+F
+registrations/views.py,a\2\a2918e1c2a9c82d1e684a64d98b237640c873bc1
+?
+venues/views.py,4\f\4fd6b8a2d6977952ff4aa6c3f8307c33a064f86c
+A
+analytics/urls.py,3\0\30b11b94ea7a8619c73803dc522ca9b1a929ff8c
+S
+#analytics/templates/user_actions.py,2\6\26ea772a1ea03b6ed71f80d2928dbff4297ff61c
+_
+/analytics/templates/analytics/user_actions.html,c\9\c9a8e976ad334db30c349b4238c2da47ebd86e4d
+^
+.analytics/templates/analytics/page_visits.html,f\e\fe8e0f22d75bca5e3f70022991f56e86054fba71

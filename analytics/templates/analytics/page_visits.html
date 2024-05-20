@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+
+{% block title %}Page Visits{% endblock %}
+
+{% block extrahead %}
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+{% endblock extrahead %}
+
+{% block content %}
+    <h1>Page Visits</h1>
+    <canvas id="pageVisitsChart" width="400" height="200"></canvas>
+    <script>
+        const ctx = document.getElementById('pageVisitsChart').getContext('2d');
+        const pageVisitsChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: {{ labels|safe }},
+                datasets: [{
+                    label: 'Page Visits',
+                    data: {{ data|safe }},
+                    borderColor: 'rgba(75, 192, 192, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+    </script>
+{% endblock content %}
