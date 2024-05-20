@@ -50,8 +50,7 @@ INSTALLED_APPS = [
     'venues.apps.VenuesConfig',
     'equipment.apps.EquipmentConfig',
     'analytics.apps.AnalyticsConfig',
-    'clubs',
-    'analytics'
+    'clubs'
 ]
 
 MIDDLEWARE = [

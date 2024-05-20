@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+
+{% block title %}Reserve Equipment{% endblock title %}
+
+{% block content %}
+<h1>Reserve {{ equipment.name }}</h1>
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Reserve</button>
+</form>
+<a href="{% url 'equipment_detail' equipment.pk %}">Cancel</a>
+{% endblock content %}
