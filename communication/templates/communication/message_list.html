@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h1>Сообщения</h1>
+{% for message in messages %}
+<div>
+    <h2>{{ message.subject }}</h2>
+    <p>{{ message.body }}</p>
+    <a href="{% url 'communication:message_detail' message.id %}">Просмотр</a>
+    <a href="{% url 'communication:message_update' message.id %}">Редактирование</a>
+    <a href="{% url 'communication:message_delete' message.id %}">Удаление</a>
+</div>
+{% emtpy %}
+<p>Сообщений пока нет.</p>
+{% endfor %}
+
+{% endblock content %}

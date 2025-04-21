@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block title %}Мои оплаты{% endblock title %}
+
+{% block content %}
+<h1>История оплат</h1>
+<a href="{% url 'payments:payment_create' %}">Создать платёж</a>
+<ul>
+    {% for payment in payments %}
+        <li>
+            <strong>{{ payment.service.name }}</strong>: {{ payment.amount }} {{ payment.currency }} — {{ payment.get_status_display }} ({{ payment.timestamp|date:"Y-m-d H:i" }})
+        </li>
+    {% empty %}
+        <li>У вас пока нет оплат</li>
+    {% endfor %}
+</ul>
+{% endblock content %}

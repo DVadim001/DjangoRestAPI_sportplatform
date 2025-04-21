@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+
+{% block title %}Регистрация на событие{% endblock title %}
+
+{% block content %}
+<h1>Регистрация на мероприятие</h1>
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Зарегистрироваться</button>
+</form>
+<a href="{% url 'registrations:registration_list' %}">Назад</a>
+{% endblock content %}

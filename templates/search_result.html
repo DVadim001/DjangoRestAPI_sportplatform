@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Результаты поиска
+{% endblock title %}
+
+{% block content %}
+
+<h1>Результаты поиска</h1>
+
+{% if user_profiles or events or participants %}
+    <h2>Найдены пользователи</h2>
+    {% if user_profiles %}
+        <ul>
+            {% for user in user_profiles %}
+            <li><a href="{% url 'users:profile_view' user.id %}">{{ user.username }}</a></li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>Пользователи не найдены</p>
+    {% endif %}
+
+<h2>Найденные события</h2>
+    {% if events %}
+        <ul>
+            {% for event in events %}
+                <li><a href="{% url 'events:event_details' event.id %}">{{ event.name }}</a> - {{ event.location }}</li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>События не найдены.</p>
+    {% endif %}
+
+    <h2>Найденные участники</h2>
+    {% if participants %}
+        <ul>
+            {% for participant in participants %}
+                <li>{{ participant.user.username }} участвует в <a href="{% url 'events:event_details' participant.event.id %}">{{ participant.event.name }}</a></li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>Участники не найдены.</p>
+    {% endif %}
+
+{% else %}
+    <p>По вашему запросу ничего не найдено.</p>
+{% endif %}
+
+{% endblock %}

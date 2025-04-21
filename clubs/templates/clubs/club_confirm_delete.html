@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>Удаление клуба</h1>
+<p>Вы уверены, что хотите удалить клуб "{{ club.name }}"?</p>
+<form method="post">
+    {% csrf_token %}
+    <button type="submit">Удалить</button>
+    <a href="{% url 'clubs:club_detail' club.id %}">Отмена</a>
+</form>
+{% endblock content %}

@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+
+<div class="container">
+    <h2>Подтвердите удаление события</h2>
+    <p>Вы уверены, что хотите удалить событие "{{ event.name }}"?</p>
+
+    <form method="post">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-danger">Удалить</button>
+        <a href="{% url 'events:events_list' %}" class="btn btn-secondary">Отмена</a>
+    </form>
+
+</div>
+{% endblock content %}

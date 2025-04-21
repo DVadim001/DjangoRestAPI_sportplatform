@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+
+{% block title %}User Actions{% endblock %}
+
+{% block extrahead %}
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+{% endblock extrahead %}
+
+{% block content %}
+    <h1>User Actions</h1>
+    <canvas id="userActionsChart" width="400" height="200"></canvas>
+    <script>
+        const ctx = document.getElementById('userActionsChart').getContext('2d');
+        const userActionsChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: {{ labels|safe }},
+                datasets: [
+                    {% for action_type in action_types %}
+                    {
+                        label: '{{ action_type }}',
+                        data: {{ data[action_type]|safe }},
+                        borderColor: '{{ "rgba(" ~ forloop.counter0|add:"50"|mod:255 ~ ", 99, 132, 1)" }}',
+                        borderWidth: 1
+                    },
+                    {% endfor %}
+                ]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+    </script>
+{% endblock content %}

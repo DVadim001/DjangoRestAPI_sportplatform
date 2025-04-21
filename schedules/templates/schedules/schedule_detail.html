@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+
+<h2>{{ schedule.title }}</h2>
+<p>{{ schedule.description }}</p>
+<p>Начало: {{ schedule.start_time }}</p>
+<p>Окончание: {{ schedule.end_time }}</p>
+<a href="{% url 'schedule:schedule_edit' schedule.id %}">Редактирование</a>
+<a href="{% url 'schedule:schedule_delete' schedule.id %}">Удалить</a>
+<a href="{% url 'schedule:schedule_list' schedule.id %}">Назад к списку событий</a>
+
+{% endblock content %}

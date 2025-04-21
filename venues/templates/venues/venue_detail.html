@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+
+{% block title %}{{ venue.name }}{% endblock title %}
+
+{% block content %}
+<h1>{{ venue.name }}</h1>
+<p><strong>Описание:</strong> {{ venue.description }}</p>
+<p><strong>Адрес:</strong> {{ venue.address }}</p>
+<p><strong>Вместимость:</strong> {{ venue.capacity }}</p>
+<p><strong>Создано:</strong> {{ venue.created_at }}</p>
+<a href="{% url 'venues:venue_edit' venue.pk %}">Редактировать</a>
+<a href="{% url 'venues:venue_delete' venue.pk %}">Удалить</a>
+<a href="{% url 'venues:venue_list' %}">Назад к списку</a>
+{% endblock content %}

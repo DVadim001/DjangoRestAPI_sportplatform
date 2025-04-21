@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h1>Клубы</h1>
+<a href="{% url 'clubs:club_create' %}">Создать новый клуб</a>
+<ul>
+    {% for club in clubs %}
+        <li>
+            <a href="{% url 'clubs:club_detail' club.id %}">{{ club.name }}</a>
+            - <a href="{% url 'clubs:club_edit' club.id %}">Редактировать</a>
+            - <a href="{% url 'clubs:club_delete' club.id %}">Удалить</a>
+        </li>
+    {% empty %}
+        <li>Клубы не найдены.</li>
+    {% endfor %}
+</ul>
+
+{% endblock content %}

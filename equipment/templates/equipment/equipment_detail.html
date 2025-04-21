@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+
+{% block title %}Equipment Detail{% endblock title %}
+
+{% block content %}
+<h1>{{ equipment.name }}</h1>
+<p>{{ equipment.description }}</p>
+<p>Status: {{ equipment.get_status_display }}</p>
+<a href="{% url 'equipment_edit' equipment.pk %}">Edit</a>
+<a href="{% url 'equipment_delete' equipment.pk %}">Delete</a>
+<a href="{% url 'equipment_reserve' equipment.pk %}">Reserve</a>
+{% endblock content %}

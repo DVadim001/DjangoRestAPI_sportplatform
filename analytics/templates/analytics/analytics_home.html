@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+
+{% block title %}Аналитика{% endblock title %}
+
+{% block content %}
+<h1>Аналитика</h1>
+<ul>
+    <li><a href="{% url 'analytics:page_visits' %}">📄 Посещения страниц</a></li>
+    <li><a href="{% url 'analytics:user_actions' %}">👤 Активность пользователей</a></li>
+</ul>
+{% endblock content %}

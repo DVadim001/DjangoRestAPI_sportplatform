@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+
+{% block title %}Мои регистрации{% endblock title %}
+
+{% block content %}
+<h1>Ваши регистрации на мероприятия</h1>
+<a href="{% url 'registrations:register_for_event' %}">Зарегистрироваться на мероприятие</a>
+<ul>
+    {% for reg in registrations %}
+        <li>
+            <strong>{{ reg.event.name }}</strong> — {{ reg.get_status_display }} ({{ reg.registered_at|date:"Y-m-d H:i" }})<br>
+            {% if reg.comment %}<em>Комментарий:</em> {{ reg.comment }}{% endif %}
+        </li>
+    {% empty %}
+        <li>Вы пока ни на что не зарегистрированы.</li>
+    {% endfor %}
+</ul>
+{% endblock content %}

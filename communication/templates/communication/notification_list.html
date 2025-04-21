@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>Список уведомлений</h1>
+<ul>
+    {% for notification in notifications %}
+    <li>
+        {{ notification.message }}
+        <a href="{% url 'notification_detail' notification.id %}">Просмотр</a>
+        <a href="{% url 'notification_confirm_delete' notification.id %}">Удалить</a>
+    </li>
+    {% empty %}
+    <li>Уведомлений нет.</li>
+    {% endfor %}
+</ul>
+{% endblock content %}

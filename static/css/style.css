@@ -1,0 +1,16 @@
+.user-messages {
+    margin-top: 20px;
+    padding: 10px;
+    background-color: #f4f4f4;
+    border-radius: 5px;
+}
+.user-messages h2 {
+    color: #333;
+}
+.user-messages ul {
+    list-style: none;
+    padding: 0;
+}
+.user-messages li {
+    margin-bottom: 10px;
+}
