@@ -37,7 +37,7 @@ def create_new_event(request):
 def events_list(request):
     events = Event.objects.all()
     context = {'events': events}
-    return render(request, 'events/events_list', context)
+    return render(request, 'events/events_list.html', context)
 
 
 # Вывод списка категорий событий

@@ -20,6 +20,10 @@ urlpatterns += i18n_patterns(
     path('venues/', include('venues.urls')),
     path('payments/', include('payments.urls')),
     path('registrations/', include('registrations.urls')),
+    path('events/', include('events.urls', namespace='events')),
+    path('equipment/', include('equipment.urls', namespace='equipment')),
+    path('analytics/', include('analytics.urls', namespace='analytics')),
+
     prefix_default_language=False,
 
 )

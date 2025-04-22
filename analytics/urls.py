@@ -3,6 +3,8 @@ from rest_framework.routers import DefaultRouter
 from .views import PageVisitViewSet, UserActionViewSet, page_visits_chart, user_actions_chart
 from django.shortcuts import render
 
+app_name = 'analytics'
+
 router = DefaultRouter()
 router.register(r'pagevisits', PageVisitViewSet)
 router.register(r'useractions', UserActionViewSet)

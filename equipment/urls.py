@@ -2,6 +2,8 @@ from django.urls import path, include
 from rest_framework.routers import DefaultRouter
 from . import views
 
+app_name = 'equipment'
+
 router = DefaultRouter()
 router.register(r'equipment', views.EquipmentViewSet)
 router.register(r'reservations', views.EquipmentReservationViewSet)
