@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block title %}Отмена регистрации{% endblock title %}
+
+{% block content %}
+<h1>Подтвердите отмену регистрации</h1>
+
+<p>Вы действительно хотите отменить регистрацию на мероприятие:
+   <strong>{{ registration.event.name }}</strong>?</p>
+
+<form method="post">
+    {% csrf_token %}
+    <button type="submit">Да, отменить</button>
+    <a href="{% url 'registrations:registration_list' %}">Нет, вернуться</a>
+</form>
+{% endblock content %}

@@ -42,4 +42,7 @@ urlpatterns = [
     path('', views.registration_list, name='registration_list'),
     path('create/', views.register_for_event, name='register_for_event'),
     path('', include(router.urls)),
+    path('cancel/<int:registration_id>/', views.cancel_registration, name='cancel_registration'),
+
+
 ]

@@ -25,6 +25,7 @@ class CustomUserCreationForm(UserCreationForm):
 
 
 class UserProfileUpdateForm(forms.ModelForm):
+    avatar = forms.ImageField(required=False)
     phone_number = PhoneNumberField(widget=forms.TextInput(attrs={
         'placeholder': '+1234567890'
     }), label='Phone number')
@@ -32,6 +33,7 @@ class UserProfileUpdateForm(forms.ModelForm):
     class Meta:
         model = UserProfile
         fields = [
+            'avatar',
             'phone_number',
             'birth_date',
             'bio',

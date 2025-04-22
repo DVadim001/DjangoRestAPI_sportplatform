@@ -7,6 +7,7 @@ from django.contrib import messages
 from .models import Event, Participant
 from .forms import EventForm, ParticipantForm
 
+from analytics.models import UserAction
 
 # Создание нового события
 @login_required
@@ -17,6 +18,14 @@ def create_new_event(request):
             event = form.save(commit=False)
             event.organizer = request.user  # Установка создателя события
             event.save()
+
+            # логируем создание события
+            UserAction.objects.create(
+                user=request.user,
+                action_type='event_create',
+                description=f'Создал мероприятие: {event.title}'
+            )
+
             return redirect('events:events_list')
     else:
         form = EventForm()
@@ -67,6 +76,7 @@ def event_edit(request, event_id):
 @login_required
 def register_for_event(request, event_id):
     event = get_object_or_404(Event, id=event_id)
+
     if Participant.objects.filter(event=event, user=request.user).exists():
         messages.error(request, "Вы уже зарегистрированы на это событие.")
         return redirect('events:event_details', event_id=event_id)
@@ -78,6 +88,14 @@ def register_for_event(request, event_id):
             participant.user = request.user
             participant.event = event
             participant.save()
+
+            # логируем событие
+            UserAction.objects.create(
+                user=request.user,
+                action_type='event_signup',
+                description=f'Зарегистрировался на мероприятие: {event.name}'
+            )
+
             messages.success(request, "Вы успешно зарегистрировались на событие.")
             return redirect('events:event_details', event_id=event_id)
     else:

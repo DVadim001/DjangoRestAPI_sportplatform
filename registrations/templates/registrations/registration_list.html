@@ -9,7 +9,19 @@
     {% for reg in registrations %}
         <li>
             <strong>{{ reg.event.name }}</strong> — {{ reg.get_status_display }} ({{ reg.registered_at|date:"Y-m-d H:i" }})<br>
-            {% if reg.comment %}<em>Комментарий:</em> {{ reg.comment }}{% endif %}
+
+            {% if reg.comment %}
+                <em>Комментарий:</em> {{ reg.comment }}<br>
+            {% endif %}
+
+            <!-- Кнопка для перехода к событию -->
+            <a href="{% url 'events:event_details' reg.event.id %}">Посмотреть событие</a>
+
+            <!-- Форма для отмены регистрации -->
+            <form action="{% url 'registrations:cancel_registration' reg.id %}" method="post" style="display:inline;">
+                {% csrf_token %}
+                <button type="submit">Отменить регистрацию</button>
+            </form>
         </li>
     {% empty %}
         <li>Вы пока ни на что не зарегистрированы.</li>

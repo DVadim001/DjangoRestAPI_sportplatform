@@ -30,6 +30,7 @@ class UserProfile(models.Model):
     equipment = models.TextField(blank=True, default='')  # Оборудование и инвентарь
     club_memberships = models.ManyToManyField('clubs.Club', related_name='user_profile', blank=True)  # Членство в клубах и командах
     subscriptions = models.ManyToManyField(User, related_name='followers', blank=True)  # Подписки и членство
+    avatar = models.ImageField(upload_to='avatars/', blank=True, null=True)
 
     # Настройка конфеденциальности
     privacy_settings = models.JSONField(blank=True, default=default_privacy_settings)
