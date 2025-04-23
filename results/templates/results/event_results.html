@@ -1,11 +1,25 @@
 {% extends 'base.html' %}
+{% load static %}
 
+{% block title %}Результаты: {{ event.name }}{% endblock title %}
 
 {% block content %}
+<h1>Результаты мероприятия: {{ event.name }}</h1>
 
-<h1>Результат для {{ event.name }}</h1>
-{% for result in results %}
-    <p>{{ result.position }}: {{ result.participant.username }} - {{ result.score }}</p>
-{% endfor %}
+{% if results %}
+    <div class="card">
+        <ul>
+            {% for result in results %}
+                <li><strong>{{ result.position }}</strong> — {{ result.participant.username }} ({{ result.score }})</li>
+            {% endfor %}
+        </ul>
+    </div>
+{% else %}
+    <p>Результаты для этого мероприятия пока не добавлены.</p>
+{% endif %}
 
+<div style="margin-top: 20px;">
+    <a href="{% url 'events:event_details' event.id %}" class="btn">К мероприятию</a>
+    <a href="javascript:history.back()" class="btn">Назад</a>
+</div>
 {% endblock content %}

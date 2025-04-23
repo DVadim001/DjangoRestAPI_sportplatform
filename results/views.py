@@ -1,27 +1,30 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404, redirect
+from django.contrib.auth.decorators import login_required
 from .models import Result, Event
-from rest_framework import viewsets
-from .serializers import EventSerializer, ResultSerializer
+from .forms import ResultForm
 
-
-class EventViewSet(viewsets.ModelViewSet):
-    queryset = Event.objects.all()
-    serializer_class = EventSerializer
-
-
-class ResultViewSet(viewsets.ModelViewSet):
-    queryset = Result.objects.all()
-    serializer_class = ResultSerializer
-
-
+@login_required
 def result_list(request):
     results = Result.objects.all()
-    context = {'results': results}
-    return render(request, 'results/result_list.html', context)
+    return render(request, 'results/result_list.html', {'results': results})
 
-
+@login_required
 def event_results(request, event_id):
-    results = Result.objects.filter(event__id=event_id).order_by('position')
-    event = Event.objects.get(id=event_id)
-    context = {'results': results, 'event': event}
-    return render(request, 'results/event_results.html', context)
+    event = get_object_or_404(Event, id=event_id)
+    results = Result.objects.filter(event=event).order_by('position')
+    return render(request, 'results/event_results.html', {'event': event, 'results': results})
+
+@login_required
+def add_result(request, event_id):
+    event = get_object_or_404(Event, id=event_id)
+    if request.method == 'POST':
+        form = ResultForm(request.POST)
+        if form.is_valid():
+            result = form.save(commit=False)
+            result.event = event
+            result.participant = request.user
+            result.save()
+            return redirect('results:event_results', event_id=event.id)
+    else:
+        form = ResultForm()
+    return render(request, 'results/add_result.html', {'form': form, 'event': event})
