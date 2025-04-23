@@ -1,8 +1,11 @@
-{% extends 'base.html' %}
+{% extends "base.html" %}
+
+{% block title %}{{ club.name }}{% endblock title %}
 
 {% block content %}
 <h1>{{ club.name }}</h1>
 <p>{{ club.description }}</p>
-<a href="{% url 'clubs:club_edit' club.id %}">Редактировать</a>
-<a href="{% url 'clubs:club_delete' club.id %}">Удалить</a>
+
+<a href="{% url 'clubs:club_edit' club.id %}" class="btn">Редактировать</a>
+<a href="{% url 'clubs:club_delete' club.id %}" class="btn">Удалить</a>
 {% endblock content %}

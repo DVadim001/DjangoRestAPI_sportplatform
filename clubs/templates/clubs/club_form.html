@@ -1,10 +1,15 @@
-{% extends 'base.html' %}
+{% extends "base.html" %}
+
+{% block title %}{% if form.instance.pk %}Редактировать клуб{% else %}Создать клуб{% endif %}{% endblock title %}
 
 {% block content %}
-<h1>{{ form.title }}</h1>
+<h1>{% if form.instance.pk %}Редактировать клуб{% else %}Создать клуб{% endif %}</h1>
+
 <form method="post">
     {% csrf_token %}
     {{ form.as_p }}
-    <button type="submit">Сохранить</button>
+    <button type="submit" class="btn">{% if form.instance.pk %}Сохранить{% else %}Создать{% endif %}</button>
 </form>
+
+<a href="{% url 'clubs:club_list' %}">Назад к списку</a>
 {% endblock content %}

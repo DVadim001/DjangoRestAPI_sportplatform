@@ -1,11 +1,14 @@
-{% extends 'base.html' %}
+{% extends "base.html" %}
+
+{% block title %}Удаление клуба{% endblock title %}
 
 {% block content %}
 <h1>Удаление клуба</h1>
-<p>Вы уверены, что хотите удалить клуб "{{ club.name }}"?</p>
+<p>Вы уверены, что хотите удалить клуб <strong>{{ club.name }}</strong>?</p>
+
 <form method="post">
     {% csrf_token %}
-    <button type="submit">Удалить</button>
+    <button type="submit" class="btn">Удалить</button>
     <a href="{% url 'clubs:club_detail' club.id %}">Отмена</a>
 </form>
 {% endblock content %}
