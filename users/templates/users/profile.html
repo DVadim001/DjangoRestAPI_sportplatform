@@ -1,97 +1,16 @@
-{% extends "base.html" %}
+{% extends 'base.html' %}
 
 {% block title %}Профиль пользователя{% endblock title %}
 
 {% block content %}
+<h1>Профиль {{ profile_user.username }}</h1>
 
-<h1>Профиль пользователя</h1>
+<p><strong>Имя:</strong> {{ profile_user.first_name }}</p>
+<p><strong>Фамилия:</strong> {{ profile_user.last_name }}</p>
+<p><strong>Email:</strong> {{ profile_user.email }}</p>
+<p><strong>О себе:</strong> {{ profile.bio|default:"Не указано" }}</p>
 
-<!--Контактные данные-->
-{% if user_profile.avatar %}
-    <img src="{{ user_profile.avatar.url }}" alt="Аватар" width="150" height="150">
-{% else %}
-    <p>Аватар не загружен</p>
+{% if profile_user == request.user %}
+    <a class="btn" href="{% url 'users:edit_profile' %}">Редактировать профиль</a>
 {% endif %}
-
-<!--Сообщения пользователя-->
-<div>
-    <h2>Ваши сообщения</h2>
-    <ul>
-        {% for message in user.messages_received.all %}
-        <li>{{ message.sender.username }}: {{ message.text }}</li>
-        {% endfor %}
-    </ul>
-
-    <a href="{% url 'communication:message_create' %}">Отправить сообщение</a>
-</div>
-
-
-<!--Уведомления пользователей-->
-{% if user_notifications %}
-<div class="notifications">
-    {% for notification in user_notifications %}
-    <div class="notification {% if not notification.is_seen %}new{% endif %}">
-        {{ notification.message }}
-    </div>
-    {% endfor %}
-</div>
-{% endif %}
-
-<div>
-    <h2>Контактные данные:</h2>
-    <p>Телефон: {{ user_profile.phone_number }}</p>
-    <p>Email: {{ user_profile.email }}</p>
-    <p>Адрес: {{ user_profile.address }}</p>
-</div>
-
-<div>
-    <p>О себе: {{ user_profile.bio }}</p>
-    <p>Дата рождения: {{ user_profile.birth_date }}</p>
-    <p>Пол: {{ user_profile.gender }}</p>
-    <p>Рост: {{ user_profile.height }}</p>
-    <p>Вес: {{ user_profile.weight }}</p>
-</div>
-
-<div>
-    <h2>Членство в клубах:</h2>
-<ul>
-    {% for membership in clubs %}
-        <li>
-            {% if membership.club %}
-                <a href="{% url 'clubs:club_detail' membership.club.id %}">{{ membership.club.name }}</a>
-                <div>Вступил: {{ membership.date_joined|date:"Y-m-d" }}</div>
-                <div>Админ: {{ membership.is_admin|yesno:"Да,Нет" }}</div>
-            {% else %}
-                <div>Клуб не найден или удалён</div>
-            {% endif %}
-        </li>
-    {% empty %}
-        <li>Вы не состоите в клубах</li>
-    {% endfor %}
-</ul>
-<a href="{% url 'clubs:club_create' %}">Создать клуб</a>
-</div>
-
-<div>
-    <h2>Уровень подготовки:</h2>
-    <p>{{ user_profile.experience_level }}</p>
-</div>
-
-<div>
-    <h2>Предпочтения:</h2>
-    <p>{{ user_profile.preferred_sports }}</p>
-</div>
-
-<div>
-    <h3>Подписки:</h3>
-    <ul>
-        {% for subscriber in user_profile.subscriptions.all %}
-            <li><a href="{% url 'users:profile_view' subscriber.id %}">{{ subscriber.username }}</a></li>
-        {% empty %}
-            <li>Нет подписок.</li>
-        {% endfor %}
-    </ul>
-</div>
-
-
 {% endblock content %}

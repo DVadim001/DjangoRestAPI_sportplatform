@@ -1,10 +1,15 @@
 {% extends 'base.html' %}
 
+{% block title %}Настройки пользователя{% endblock title %}
+
 {% block content %}
-<h2>Настройки пользователя</h2>
+<h2>Настройки</h2>
+
 <form method="post">
     {% csrf_token %}
     {{ form.as_p }}
-    <button type="submit">Обновить настройки</button>
+    <button type="submit" class="btn">Обновить</button>
 </form>
+
+<p><a href="{% url 'users:profile_view' user.id %}">Вернуться в профиль</a></p>
 {% endblock content %}
