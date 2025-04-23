@@ -1,19 +1,17 @@
 {% extends 'base.html' %}
 
+{% block title %}{{ event.name }}{% endblock title %}
 
 {% block content %}
-
 <h1>{{ event.name }}</h1>
-<p>Место проведения: {{ event.location }}</p>
-<p>Начало: {{ event.start_time }}</p>
-<p>Окончание: {{ event.end_time }}</p>
-<p>Описание: {{ event.description }}</p>
-<p>Организатор: {{ event.organizer }}</p>
+<p><strong>Место проведения:</strong> {{ event.location }}</p>
+<p><strong>Начало:</strong> {{ event.start_time }}</p>
+<p><strong>Окончание:</strong> {{ event.end_time }}</p>
+<p><strong>Описание:</strong> {{ event.description }}</p>
+<p><strong>Организатор:</strong> {{ event.organizer }}</p>
 
-<!--Показать кнопки редактирования и удаления только уполномоченным пользователям-->
-{% if request.user == event.organiger or request.user.is_superuser %}
-<a href="{% url 'events:edit_event' event.id %}">Редактировать</a>
-<a href="{% url 'events:event_delete' event.id %}">Удалить</a>
+{% if request.user == event.organizer or request.user.is_superuser %}
+    <a href="{% url 'events:event_edit' event.id %}" class="btn">Редактировать</a>
+    <a href="{% url 'events:event_delete' event.id %}" class="btn btn-danger">Удалить</a>
 {% endif %}
-
 {% endblock content %}

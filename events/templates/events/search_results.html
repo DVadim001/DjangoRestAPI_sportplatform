@@ -1,18 +1,20 @@
 {% extends 'base.html' %}
 
+{% block title %}Результаты поиска{% endblock title %}
 
 {% block content %}
-
 <h2>Результаты поиска событий</h2>
+
 {% if events %}
     <ul>
         {% for event in events %}
-        <li><a href="{% url 'event_detail' event.id %}">{{ event.name }}</a>
-        - с {{ event.start_time }} до {{ event.end_time }}</li>
+        <li class="card">
+            <a href="{% url 'events:event_details' event.id %}"><strong>{{ event.name }}</strong></a><br>
+            {{ event.start_time|date:"d.m.Y H:i" }} — {{ event.end_time|date:"d.m.Y H:i" }}
+        </li>
         {% endfor %}
     </ul>
 {% else %}
-<p>События по вашему запросу не найдены.</p>
+    <p>События по вашему запросу не найдены.</p>
 {% endif %}
-
 {% endblock content %}

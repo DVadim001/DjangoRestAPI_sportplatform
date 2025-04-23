@@ -1,13 +1,15 @@
 {% extends 'base.html' %}
 
+{% block title %}Создание события{% endblock title %}
 
 {% block content %}
+<h2>Создать событие</h2>
 
-<h2>{{ create_or_edite }} Событие</h2>
-<form method="post" enctype="multipart/form-data">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Сохранить</button>
-</form>
-
+<div class="card">
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn">Сохранить</button>
+    </form>
+</div>
 {% endblock content %}
