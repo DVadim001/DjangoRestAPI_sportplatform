@@ -17,4 +17,5 @@ urlpatterns = [
     path('<int:pk>/', views.club_detail, name='club_detail'),
     path('<int:pk>/edit/', views.club_edit, name='club_edit'),
     path('<int:pk>/delete/', views.club_delete, name='club_delete'),
+
 ]

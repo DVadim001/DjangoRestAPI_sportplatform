@@ -1,9 +1,11 @@
 from django.shortcuts import render, redirect, get_object_or_404
+from django.contrib.auth.decorators import login_required
+from django.contrib import messages
 from .models import Club, Membership
 from .forms import ClubForm
 from .serializers import ClubSerializer, MembershipSerializer
-
 from rest_framework import viewsets
+from analytics.models import UserAction  # если используешь аналитику
 
 
 class ClubViewSet(viewsets.ModelViewSet):
@@ -16,53 +18,71 @@ class MemberViewSet(viewsets.ModelViewSet):
     serializer_class = MembershipSerializer
 
 
-# Просмотр списка клубов
+@login_required
 def club_list(request):
     clubs = Club.objects.all()
-    context = {'clubs': clubs}
-    return render(request, 'clubs/club_list.html', context)
+    return render(request, 'clubs/club_list.html', {'clubs': clubs})
 
 
-# Просмотр деталей клуба
+@login_required
 def club_detail(request, pk):
     club = get_object_or_404(Club, pk=pk)
-    context = {'club': club}
-    return render(request, 'clubs/club_detail.html', context)
+    return render(request, 'clubs/club_detail.html', {'club': club})
 
 
-# Создание клуба
+@login_required
 def club_create(request):
     if request.method == 'POST':
         form = ClubForm(request.POST)
         if form.is_valid():
             club = form.save()
             Membership.objects.create(user=request.user, club=club, is_admin=True)
-            return redirect('users:profile_view', user_id=request.user.id)
+
+            # логирование действия
+            UserAction.objects.create(
+                user=request.user,
+                action_type='content_interaction',
+                additional_info=f'Создан клуб: {club.name}'
+            )
+
+            messages.success(request, 'Клуб успешно создан!')
+            return redirect('clubs:club_detail', pk=club.pk)
     else:
         form = ClubForm()
-    context = {'form': form}
-    return render(request, 'clubs/club_form.html', context)
+    return render(request, 'clubs/club_form.html', {'form': form})
 
 
-# Редактирование клуба
+@login_required
 def club_edit(request, pk):
     club = get_object_or_404(Club, pk=pk)
+
+    # Проверка, что пользователь — админ этого клуба
+    if not Membership.objects.filter(user=request.user, club=club, is_admin=True).exists():
+        messages.error(request, 'У вас нет прав для редактирования этого клуба.')
+        return redirect('clubs:club_detail', pk=pk)
+
     if request.method == 'POST':
         form = ClubForm(request.POST, instance=club)
         if form.is_valid():
-            club = form.save()
+            form.save()
+            messages.success(request, 'Клуб успешно обновлён!')
             return redirect('clubs:club_detail', pk=club.pk)
     else:
         form = ClubForm(instance=club)
-    context = {'form': form}
-    return render(request, 'clubs/club_form.html', context)
+    return render(request, 'clubs/club_form.html', {'form': form})
 
 
-# Удаление клуба
+@login_required
 def club_delete(request, pk):
-    club = get_object_or_404(Club, id=pk)
+    club = get_object_or_404(Club, pk=pk)
+
+    # Проверка, что пользователь — админ этого клуба
+    if not Membership.objects.filter(user=request.user, club=club, is_admin=True).exists():
+        messages.error(request, 'У вас нет прав для удаления этого клуба.')
+        return redirect('clubs:club_detail', pk=pk)
+
     if request.method == 'POST':
         club.delete()
+        messages.success(request, 'Клуб удалён.')
         return redirect('clubs:club_list')
-    context = {'club': club}
-    return render(request, 'clubs/club_confirm_delete.html', context)
+    return render(request, 'clubs/club_confirm_delete.html', {'club': club})
