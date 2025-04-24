@@ -1,7 +1,7 @@
 from django import forms
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
-from .models import UserProfile
+from .models import UserProfile, UserSettings
 from django.forms import DateInput, Textarea
 from django.utils import timezone
 from phonenumber_field.formfields import PhoneNumberField
@@ -61,5 +61,12 @@ class UserProfileForm(forms.ModelForm):
 
 class UserSettingsForm(forms.ModelForm):
     class Meta:
-        model = UserProfile
+        model = UserSettings
         fields = ['receive_newsletters', 'public_profile']
+
+
+class UserInfoForm(forms.ModelForm):
+    """Отдельная форма для редактирования first_name, last_name и email пользователя."""
+    class Meta:
+        model = User
+        fields = ['first_name', 'last_name', 'email']

@@ -1,16 +1,23 @@
 {% extends 'base.html' %}
-
-{% block title %}Профиль пользователя{% endblock title %}
+{% block title %}Профиль {{ user.username }}{% endblock %}
 
 {% block content %}
-<h1>Профиль {{ profile_user.username }}</h1>
+  <h1>Профиль {{ user.username }}</h1>
 
-<p><strong>Имя:</strong> {{ profile_user.first_name }}</p>
-<p><strong>Фамилия:</strong> {{ profile_user.last_name }}</p>
-<p><strong>Email:</strong> {{ profile_user.email }}</p>
-<p><strong>О себе:</strong> {{ profile.bio|default:"Не указано" }}</p>
+  <p><strong>Имя:</strong> {{ user.first_name }}</p>
+  <p><strong>Фамилия:</strong> {{ user.last_name }}</p>
+  <p><strong>Email:</strong> {{ user.email }}</p>
 
-{% if profile_user == request.user %}
-    <a class="btn" href="{% url 'users:edit_profile' %}">Редактировать профиль</a>
-{% endif %}
-{% endblock content %}
+  <p><strong>О себе:</strong> {{ user.profile.bio|default:"Не указано" }}</p>
+  <p><strong>Номер телефона:</strong> {{ user.profile.phone_number|default:"Не указано" }}</p>
+  <p><strong>Дата рождения:</strong> {{ user.profile.birth_date|date:"d.m.Y"|default:"Не указана" }}</p>
+  <p><strong>Пол:</strong> {{ user.profile.get_gender_display|default:"Не указан" }}</p>
+  <p><strong>Рост:</strong> {{ user.profile.height|default:"Не указан" }}</p>
+  <p><strong>Вес:</strong> {{ user.profile.weight|default:"Не указан" }}</p>
+  <p><strong>Опыт:</strong> {{ user.profile.experience_level|default:"Не указан" }}</p>
+  <p><strong>Предпочтительные виды спорта:</strong> {{ user.profile.preferred_sports|default:"Не указаны" }}</p>
+  <p><strong>Медицинская информация:</strong> {{ user.profile.medical_information|default:"Не указана" }}</p>
+  <p><strong>Инвентарь:</strong> {{ user.profile.equipment|default:"Не указан" }}</p>
+
+  <a href="{% url 'users:edit_profile' %}" class="btn btn-primary">Редактировать профиль</a>
+{% endblock %}

@@ -1,30 +1,38 @@
 from django import forms
 from .models import Event, Participant
-
+from taggit.forms import TagWidget
+from django.forms.widgets import DateTimeInput
 
 class EventForm(forms.ModelForm):
-    model = Event
-    fields = ['name',
-              'start_date',
-              'end_date',
-              'category',
-              'locations',
-              'description',
-              'organizer'
-              ]
-
-    widgets = {
-        'name': forms.TextInput(attrs={'class': 'form-control'}),
-        'start_date': forms.DateInput(format='%Y-%m-%d', attrs={'class': 'form-control', 'type': 'date'}),
-        'end_date': forms.DateInput(format='%Y-%m-%d', attrs={'class': 'form-control', 'type': 'date'}),
-        'category': forms.Select(attrs={'class': 'form-control'}),
-        'locations': forms.TextInput(attrs={'class': 'form-control'}),
-        'description': forms.Textarea(attrs={'class': 'form-control'}),
-        'organizer': forms.TextInput(attrs={'class': 'form-control'})
-    }
-
+    class Meta:
+        model = Event
+        fields = ['name', 'description', 'start_time', 'end_time', 'location', 'tags']
+        widgets = {
+            'start_time': DateTimeInput(attrs={
+                'type': 'datetime-local',
+                'class': 'form-control',
+                'placeholder': 'Начало события'
+            }),
+            'end_time': DateTimeInput(attrs={
+                'type': 'datetime-local',
+                'class': 'form-control',
+                'placeholder': 'Окончание события'
+            }),
+            'tags': TagWidget(attrs={
+                'class': 'form-control',
+                'placeholder': 'Введите теги'
+            }),
+        }
+        labels = {
+            'name': 'Название',
+            'description': 'Описание',
+            'start_time': 'Дата и время начала',
+            'end_time': 'Дата и время окончания',
+            'location': 'Место проведения',
+            'tags': 'Теги',
+        }
 
 class ParticipantForm(forms.ModelForm):
     class Meta:
         model = Participant
-        fields = ['status']
+        fields = ['user']

@@ -17,7 +17,7 @@ class Event(models.Model):
     description = models.TextField(blank=True)
     organizer = models.ForeignKey(User, on_delete=models.CASCADE)
     category = models.CharField(max_length=100)
-    tags = models.ManyToManyField(Tag, related_name='events')
+    tags = models.ManyToManyField(Tag, related_name='events', blank=True)
 
     def __str__(self):
         return self.name
@@ -26,9 +26,14 @@ class Event(models.Model):
 class Participant(models.Model):
     event = models.ForeignKey(Event, on_delete=models.CASCADE, related_name='participants')
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    status = models.CharField(max_length=20, choices=[('registered', 'Registered'),
-                                                      ('waiting', 'Waiting'),
-                                                      ('cancelled', 'Cancelled')])
+    status = models.CharField(
+        max_length=20,
+        choices=[
+            ('registered', 'Registered'),
+            ('waiting', 'Waiting'),
+            ('cancelled', 'Cancelled')
+        ]
+    )
 
     def __str__(self):
         return f'{self.user.username} - {self.event.name}'
@@ -51,11 +56,10 @@ class EventTag(models.Model):
 
 
 class Notification(models.Model):
-    # Тип уведомления, например: 'event_remainder', 'new_event', 'update' и т.д.
     notification_type = models.CharField(max_length=50)
     to_user = models.ForeignKey(User, related_name='notifications', on_delete=models.CASCADE)
     from_user = models.ForeignKey(User, null=True, blank=True, on_delete=models.CASCADE)
-    event = models.ForeignKey('Event', related_name='notifications', on_delete=models.CASCADE, null=True, blank=True)
+    event = models.ForeignKey(Event, related_name='notifications', on_delete=models.CASCADE, null=True, blank=True)
     date = models.DateTimeField(auto_now_add=True)
     text_preview = models.CharField(max_length=90, blank=True)
     is_seen = models.BooleanField(default=False)

@@ -1,24 +1,23 @@
-from django.contrib.auth.decorators import login_required
-from django.contrib import messages
-from django.contrib.auth import login as auth_login, logout as auth_logout, update_session_auth_hash
-from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib.auth.models import User
-from django.shortcuts import render, redirect, get_object_or_404
-from rest_framework import viewsets
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth import update_session_auth_hash
+from django.shortcuts import render, get_object_or_404, redirect
+from django.contrib import messages
+from django.utils.translation import gettext as _
+from rest_framework import viewsets, permissions
+from rest_framework.response import Response
+from rest_framework.decorators import action
+
 from .models import UserProfile, UserSettings
 from .forms import CustomUserCreationForm, UserProfileForm, UserSettingsForm
+from .serializers import UserProfileSerializer
 
-from .serializers import UserProfileSerializer, UserSettingsSerializer
-
-
-class UserProfileViewSet(viewsets.ModelViewSet):
-    queryset = UserProfile.objects.all()
-    serializer_class = UserProfileSerializer
+from django.contrib.auth.decorators import login_required
 
 
-class UserSettingsViewSet(viewsets.ModelViewSet):
-    queryset = UserSettings.objects.all()
-    serializer_class = UserSettingsSerializer
+def users_list(request):
+    users = User.objects.all()
+    return render(request, 'users/users_list.html', {'users': users})
 
 
 def register(request):
@@ -27,67 +26,107 @@ def register(request):
         if form.is_valid():
             user = form.save()
             UserProfile.objects.create(user=user)
-            auth_login(request, user)
-            return redirect('users:profile_view', user_id=user.id)
+            UserSettings.objects.create(user=user)
+            return redirect('users:login')
     else:
         form = CustomUserCreationForm()
     return render(request, 'users/register.html', {'form': form})
 
 
-def logout_request(request):
-    auth_logout(request)
-    return redirect('main')
-
-
 @login_required
 def profile_view(request, user_id):
-    profile = get_object_or_404(UserProfile, user__id=user_id)
-    return render(request, 'users/profile.html', {'profile': profile})
-
-
-@login_required
-def get_all_users(request):
-    users = User.objects.all()
-    return render(request, 'users/users_list.html', {'users': users})
+    user = get_object_or_404(User, pk=user_id)
+    profile = getattr(user, 'profile', None)
+    return render(request, 'users/profile.html', {
+        'profile_user': user,
+        'profile': profile
+    })
 
 
 @login_required
 def edit_profile(request):
-    profile = request.user.userprofile
-    if request.method == 'POST':
-        form = UserProfileForm(request.POST, instance=profile)
-        if form.is_valid():
-            form.save()
-            messages.success(request, 'Профиль обновлён.')
-            return redirect('users:profile_view', user_id=request.user.id)
-    else:
-        form = UserProfileForm(instance=profile)
-    return render(request, 'users/edit_profile.html', {'form': form})
+    user = request.user
 
+    # Создание профиля, если его нет
+    if not hasattr(user, 'profile'):
+        UserProfile.objects.create(user=user)
 
-@login_required
-def update_profile_settings(request):
-    settings, created = UserSettings.objects.get_or_create(user=request.user)
+    profile = user.profile
+
     if request.method == 'POST':
-        form = UserSettingsForm(request.POST, instance=settings)
-        if form.is_valid():
-            form.save()
-            messages.success(request, 'Настройки обновлены.')
-            return redirect('users:settings')
+        profile_form = UserProfileForm(request.POST, request.FILES, instance=profile)
+
+        # Обновляем данные пользователя (имя и фамилия)
+        user.first_name = request.POST.get('first_name', '').strip()
+        user.last_name = request.POST.get('last_name', '').strip()
+
+        if profile_form.is_valid():
+            profile_form.save()
+            user.save()  # сохраняем имя и фамилию
+            return redirect('users:profile_view', user_id=user.id)
+
     else:
-        form = UserSettingsForm(instance=settings)
-    return render(request, 'users/settings.html', {'form': form})
+        profile_form = UserProfileForm(instance=profile)
+
+    context = {
+        'profile_form': profile_form,
+        'user': user,
+    }
+    return render(request, 'users/edit_profile.html', context)
 
 
 @login_required
 def change_password(request):
     if request.method == 'POST':
-        form = PasswordChangeForm(data=request.POST, user=request.user)
+        current_password = request.POST.get('current_password')
+        new_password = request.POST.get('new_password')
+        confirm_password = request.POST.get('confirm_password')
+
+        if not request.user.check_password(current_password):
+            messages.error(request, _('Текущий пароль неверен.'))
+        elif new_password != confirm_password:
+            messages.error(request, _('Пароли не совпадают.'))
+        else:
+            request.user.set_password(new_password)
+            request.user.save()
+            update_session_auth_hash(request, request.user)
+            messages.success(request, _('Пароль успешно изменён.'))
+            return redirect('users:profile_view', user_id=request.user.id)
+
+    return render(request, 'users/change_password.html')
+
+
+@login_required
+def user_settings_view(request):
+    settings, _ = UserSettings.objects.get_or_create(user=request.user)
+    if request.method == 'POST':
+        form = UserSettingsForm(request.POST, instance=settings)
         if form.is_valid():
             form.save()
-            update_session_auth_hash(request, form.user)
-            messages.success(request, 'Пароль успешно изменён.')
-            return redirect('users:profile_view', user_id=request.user.id)
+            messages.success(request, _('Настройки сохранены.'))
+            return redirect('users:user_settings')
     else:
-        form = PasswordChangeForm(user=request.user)
-    return render(request, 'users/change_password.html', {'form': form})
+        form = UserSettingsForm(instance=settings)
+    return render(request, 'users/settings.html', {'form': form})
+
+
+def permission_denied_view(request):
+    return render(request, 'users/permission_denied.html')
+
+
+class UserProfileViewSet(viewsets.ModelViewSet):
+    queryset = UserProfile.objects.all()
+    serializer_class = UserProfileSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get_queryset(self):
+        return UserProfile.objects.filter(user=self.request.user)
+
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)
+
+    @action(detail=False, methods=['get'])
+    def me(self, request):
+        profile = self.get_queryset().first()
+        serializer = self.get_serializer(profile)
+        return Response(serializer.data)

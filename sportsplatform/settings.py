@@ -51,6 +51,7 @@ INSTALLED_APPS = [
     'equipment.apps.EquipmentConfig',
     'analytics.apps.AnalyticsConfig',
     'clubs',
+    'taggit',
 
 ]
 
