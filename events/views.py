@@ -23,7 +23,7 @@ def create_new_event(request):
             UserAction.objects.create(
                 user=request.user,
                 action_type='event_create',
-                description=f'Создал мероприятие: {event.title}'
+                description=f'Создал мероприятие: {event.name}'
             )
 
             return redirect('events:events_list')
@@ -118,6 +118,6 @@ def event_delete(request, event_id):
 
     if request.method == 'POST':
         event.delete()
-        return redirect('events_list')
+        return redirect('events:events_list')
     context = {'event': event}
     return render(request, 'events/confirm_delete.html', context)

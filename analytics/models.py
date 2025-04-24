@@ -23,6 +23,7 @@ class UserAction(models.Model):
 
     user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True)
     action_type = models.CharField(max_length=50, choices=ACTION_CHOICE)
+    description = models.TextField()
     timestamp = models.DateTimeField(auto_now_add=True)
     additional_info = models.TextField(blank=True, null=True)
 

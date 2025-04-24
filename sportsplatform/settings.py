@@ -52,6 +52,7 @@ INSTALLED_APPS = [
     'analytics.apps.AnalyticsConfig',
     'clubs',
     'taggit',
+    'django_select2',
 
 ]
 
