@@ -1,11 +1,11 @@
-{% extends 'base.html' %}
+{% extends "base.html" %}
+
+{% block title %}Сообщение{% endblock title %}
 
 {% block content %}
-
-<h1>Детали сообщения</h1>
-<p><strong>Отправитель:</strong> {{ message.sender.username }} </p>
-<p><strong>Получатель:</strong>{{ message.recipient.username }}</p>
-<p><strong>Дата отправки:</strong>{{ message.send_at|date:"d M Y H:i" }}</p>
-<p><strong>Сообщение:</strong>{{ message.content }}</p>
-
+<h1>Сообщение</h1>
+<p><strong>От:</strong> {{ message.sender.username }}</p>
+<p><strong>Кому:</strong> {{ message.receiver.username }}</p>
+<p><strong>Содержание:</strong> {{ message.content }}</p>
+<a href="{% url 'communication:message_list' %}" class="btn">Назад к списку</a>
 {% endblock content %}

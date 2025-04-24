@@ -1,18 +1,20 @@
-{% extends 'base.html' %}
+{% extends "base.html" %}
+
+{% block title %}Входящие сообщения{% endblock title %}
 
 {% block content %}
-
 <h1>Сообщения</h1>
-{% for message in messages %}
-<div>
-    <h2>{{ message.subject }}</h2>
-    <p>{{ message.body }}</p>
-    <a href="{% url 'communication:message_detail' message.id %}">Просмотр</a>
-    <a href="{% url 'communication:message_update' message.id %}">Редактирование</a>
-    <a href="{% url 'communication:message_delete' message.id %}">Удаление</a>
-</div>
-{% emtpy %}
-<p>Сообщений пока нет.</p>
-{% endfor %}
-
+<a href="{% url 'communication:message_create' %}" class="btn">Написать сообщение</a>
+<ul>
+    {% for message in messages %}
+        <li>
+            <strong>От:</strong> {{ message.sender.username }}<br>
+            <a href="{% url 'communication:message_detail' message.pk %}">
+                {{ message.content|truncatewords:10 }}
+            </a>
+        </li>
+    {% empty %}
+        <li>У вас нет сообщений.</li>
+    {% endfor %}
+</ul>
 {% endblock content %}

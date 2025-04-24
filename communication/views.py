@@ -1,107 +1,45 @@
 from django.shortcuts import render, get_object_or_404, redirect
-from django.views.decorators.http import require_POST
+from .models import Message, Notification
+from .forms import MessageForm
 from django.contrib.auth.decorators import login_required
 
-from rest_framework import viewsets
-from rest_framework.permissions import IsAuthenticated
-from rest_framework.authentication import TokenAuthentication
-
-from .forms import MessageForm
-from .models import Message, Notification
-from .serializers import MessageSerializer, NotificationSerializer
-
-
-class MessgeViewSet(viewsets.ModelViewSet):
-    queryset = Message.objects.all()
-    serializer_class = MessageSerializer
-    authentication_classes = [TokenAuthentication]
-    permission_classes = [IsAuthenticated]
-
-
-class NotificationViewSet(viewsets.ModelViewSet):
-    queryset = Notification.objects.filter(is_seen=False)
-    serializer_class = NotificationSerializer
-    authentication_classes = [TokenAuthentication]
-    permission_classes = [IsAuthenticated]
-
-    def perform_create(self, serializer):
-        serializer.save(user=self.request.user)
-
-
-# Просмотр списка сообщений
+@login_required
 def message_list(request):
-    messages = Message.objects.filter(user=request.user)
-    context = {'messages': messages}
-    return render(request, 'communication/message_list.html', context)
-
-
-# Детали сообщения
-def message_detail(request, pk):
-    message = get_object_or_404(Message, pk=pk, user=request.user)
-    context = {'message': message}
-    return render(request, 'communication/message_detail.html', context)
-
+    messages = Message.objects.filter(receiver=request.user)
+    return render(request, 'message_list.html', {'messages': messages})
 
 @login_required
-# Создание сообщения
+def message_detail(request, pk):
+    message = get_object_or_404(Message, pk=pk)
+    return render(request, 'message_detail.html', {'message': message})
+
+@login_required
 def message_create(request):
     if request.method == 'POST':
         form = MessageForm(request.POST)
         if form.is_valid():
-            message = form.save(commit=False)
-            message.user = request.user
-            message.save()
-            return redirect('communication:message_detail', pk=message.pk)
+            msg = form.save(commit=False)
+            msg.sender = request.user
+            msg.save()
+            return redirect('communication:message_list')
     else:
         form = MessageForm()
-    context = {'form': form, 'form_title': 'Написать сообщение'}
-    return render(request, 'communication/message_form.html', context)
+    return render(request, 'message_form.html', {'form': form})
 
-
-# Редактирование сообщений
-def message_update(request, pk):
-    message = get_object_or_404(Message, pk=pk, user=request.user)
-    if request.method == 'POST':
-        form = MessageForm(request.POST, instance=message)
-        if form.is_valid():
-            form.save()
-            return redirect('communication:message_detail', pk=message.pk)
-    else:
-        form = MessageForm(instance=message)
-    context = {'form': form}
-    return render(request, 'communication/message_form.html', context)
-
-
-@require_POST
-# Удаление сообщения
-def message_delete(request, pk):
-    message = get_object_or_404(Message, pk=pk, user=request.user)
-    message.delete()
-    return redirect('communication:message_list')
-
-
-# Просмотр списка уведомлений
+@login_required
 def notification_list(request):
     notifications = Notification.objects.filter(user=request.user)
-    context = {'notifications': notifications}
-    return render(request, 'communication/notification_list.html', context)
+    return render(request, 'notification_list.html', {'notifications': notifications})
 
-
-# Отметить уведомление как прочитанное
-@require_POST
-def mark_notification_as_read(request, pk):
-    notification = get_object_or_404(Notification, pk=pk, user=request.user)
-    notification.is_read = True
-    notification.save()
-    return redirect('communication:notification_list')
-
-
-# Удаление уведомления
 @login_required
-def notification_delete(request, notification_id):
-    notification = get_object_or_404(Notification, id=notification_id, user=request.user)
+def notification_detail(request, pk):
+    notification = get_object_or_404(Notification, pk=pk)
+    return render(request, 'notification_detail.html', {'notification': notification})
+
+@login_required
+def notification_confirm_delete(request, pk):
+    notification = get_object_or_404(Notification, pk=pk)
     if request.method == 'POST':
         notification.delete()
         return redirect('communication:notification_list')
-    context = {'notification': notification}
-    return render(request, 'communication/notification_confirm_delete.html', context)
+    return render(request, 'notification_confirm_delete.html', {'notification': notification})

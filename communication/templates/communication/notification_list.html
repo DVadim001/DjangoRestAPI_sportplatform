@@ -1,16 +1,18 @@
-{% extends 'base.html' %}
+{% extends "base.html" %}
+
+{% block title %}Уведомления{% endblock title %}
 
 {% block content %}
-<h1>Список уведомлений</h1>
+<h1>Уведомления</h1>
 <ul>
     {% for notification in notifications %}
-    <li>
-        {{ notification.message }}
-        <a href="{% url 'notification_detail' notification.id %}">Просмотр</a>
-        <a href="{% url 'notification_confirm_delete' notification.id %}">Удалить</a>
-    </li>
+        <li>
+            {{ notification.message }} — {{ notification.created_at|date:"Y-m-d H:i" }}
+            <a href="{% url 'communication:notification_detail' notification.id %}">Просмотр</a>
+            <a href="{% url 'communication:notification_confirm_delete' notification.id %}">Удалить</a>
+        </li>
     {% empty %}
-    <li>Уведомлений нет.</li>
+        <li>Уведомлений нет.</li>
     {% endfor %}
 </ul>
 {% endblock content %}

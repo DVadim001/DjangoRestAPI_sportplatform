@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+
+{% block title %}Уведомление{% endblock title %}
+
+{% block content %}
+<h1>Уведомление</h1>
+<p>{{ notification.message }}</p>
+<p><strong>Дата:</strong> {{ notification.created_at|date:"Y-m-d H:i" }}</p>
+<a href="{% url 'communication:notification_list' %}" class="btn">Назад</a>
+{% endblock content %}

@@ -1,10 +1,13 @@
-{% extends 'base.html' %}
+{% extends "base.html" %}
+
+{% block title %}Новое сообщение{% endblock title %}
 
 {% block content %}
-<h1>{{ form_title }}</h1>
+<h1>Новое сообщение</h1>
 <form method="post">
     {% csrf_token %}
     {{ form.as_p }}
-    <button type="submit">Отправить</button>
+    <button type="submit" class="btn">Отправить</button>
 </form>
+<a href="{% url 'communication:message_list' %}">Назад</a>
 {% endblock content %}
