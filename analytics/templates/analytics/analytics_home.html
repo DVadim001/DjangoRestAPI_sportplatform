@@ -1,11 +1,13 @@
 {% extends "base.html" %}
 
-{% block title %}Аналитика{% endblock title %}
+{% block title %}Аналитика{% endblock %}
 
 {% block content %}
-<h1>Аналитика</h1>
+<h1>Добро пожаловать в раздел аналитики</h1>
+<p>Выберите один из видов аналитики:</p>
+
 <ul>
-    <li><a href="{% url 'analytics:page_visits_chart' %}">📄 Посещения страниц</a></li>
-    <li><a href="{% url 'analytics:user_actions_chart' %}">👤 Активность пользователей</a></li>
+    <li><a href="{% url 'analytics:page_visits_chart' %}">Посещения страниц</a></li>
+    <li><a href="{% url 'analytics:user_actions_chart' %}">Действия пользователей</a></li>
 </ul>
-{% endblock content %}
+{% endblock %}
