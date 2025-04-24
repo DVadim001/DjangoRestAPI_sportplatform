@@ -1,13 +1,15 @@
 {% extends "base.html" %}
-
 {% block title %}Список площадок{% endblock title %}
 
 {% block content %}
 <h1>Список мест проведения</h1>
-<a href="{% url 'venues:venue_create' %}">Добавить новое место</a>
+<a class="btn" href="{% url 'venues:venue_create' %}">Добавить новое место</a>
+
 <ul>
     {% for venue in venues %}
-        <li><a href="{% url 'venues:venue_detail' venue.pk %}">{{ venue.name }}</a></li>
+        <li>
+            <a href="{% url 'venues:venue_detail' venue.pk %}">{{ venue.name }}</a>
+        </li>
     {% empty %}
         <li>Нет доступных площадок</li>
     {% endfor %}

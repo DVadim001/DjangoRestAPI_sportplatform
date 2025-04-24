@@ -1,13 +1,17 @@
 {% extends "base.html" %}
 
-{% block title %}Equipment List{% endblock title %}
+{% block title %}Инвентарь{% endblock title %}
 
 {% block content %}
-<h1>Equipment List</h1>
+<h1>Список инвентаря</h1>
+<a href="{% url 'equipment:equipment_create' %}" class="btn">Добавить инвентарь</a>
 <ul>
-    {% for equipment in equipment %}
-        <li><a href="{% url 'equipment_detail' equipment.pk %}">{{ equipment.name }}</a></li>
+    {% for item in equipment_list %}
+        <li>
+            <a href="{% url 'equipment:equipment_detail' item.pk %}">{{ item.name }}</a>
+        </li>
+    {% empty %}
+        <li>Нет доступного инвентаря.</li>
     {% endfor %}
 </ul>
-<a href="{% url 'equipment_create' %}">Add New Equipment</a>
 {% endblock content %}

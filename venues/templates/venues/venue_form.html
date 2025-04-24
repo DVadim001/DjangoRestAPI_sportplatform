@@ -1,13 +1,13 @@
 {% extends "base.html" %}
-
 {% block title %}Форма площадки{% endblock title %}
 
 {% block content %}
 <h1>{% if form.instance.pk %}Редактировать{% else %}Добавить{% endif %} место проведения</h1>
+
 <form method="post">
     {% csrf_token %}
     {{ form.as_p }}
-    <button type="submit">Сохранить</button>
+    <button type="submit" class="btn">Сохранить</button>
+    <a class="btn" href="{% url 'venues:venue_list' %}">Отмена</a>
 </form>
-<a href="{% url 'venues:venue_list' %}">Отмена</a>
 {% endblock content %}

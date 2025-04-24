@@ -1,13 +1,13 @@
 {% extends "base.html" %}
 
-{% block title %}Reserve Equipment{% endblock title %}
+{% block title %}Бронирование инвентаря{% endblock title %}
 
 {% block content %}
-<h1>Reserve {{ equipment.name }}</h1>
+<h1>Бронирование "{{ equipment.name }}"</h1>
 <form method="post">
     {% csrf_token %}
     {{ form.as_p }}
-    <button type="submit">Reserve</button>
+    <button type="submit" class="btn">Забронировать</button>
 </form>
-<a href="{% url 'equipment_detail' equipment.pk %}">Cancel</a>
+<a href="{% url 'equipment:equipment_detail' equipment.pk %}" class="btn">Отмена</a>
 {% endblock content %}

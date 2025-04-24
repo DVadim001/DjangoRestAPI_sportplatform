@@ -1,12 +1,13 @@
 {% extends "base.html" %}
 
-{% block title %}Delete Equipment{% endblock title %}
+{% block title %}Удалить инвентарь{% endblock title %}
 
 {% block content %}
-<h1>Are you sure you want to delete {{ equipment.name }}?</h1>
+<h1>Удалить "{{ equipment.name }}"?</h1>
+<p>Вы уверены, что хотите удалить этот инвентарь?</p>
 <form method="post">
     {% csrf_token %}
-    <button type="submit">Yes, delete</button>
+    <button type="submit" class="btn">Удалить</button>
 </form>
-<a href="{% url 'equipment_detail' equipment.pk %}">Cancel</a>
+<a href="{% url 'equipment:equipment_detail' equipment.pk %}" class="btn">Отмена</a>
 {% endblock content %}

@@ -1,12 +1,14 @@
 {% extends "base.html" %}
 
-{% block title %}Equipment Detail{% endblock title %}
+{% block title %}{{ equipment.name }}{% endblock title %}
 
 {% block content %}
 <h1>{{ equipment.name }}</h1>
 <p>{{ equipment.description }}</p>
-<p>Status: {{ equipment.get_status_display }}</p>
-<a href="{% url 'equipment_edit' equipment.pk %}">Edit</a>
-<a href="{% url 'equipment_delete' equipment.pk %}">Delete</a>
-<a href="{% url 'equipment_reserve' equipment.pk %}">Reserve</a>
+<p><strong>Количество:</strong> {{ equipment.quantity }}</p>
+
+<a href="{% url 'equipment:equipment_edit' equipment.pk %}" class="btn">Редактировать</a>
+<a href="{% url 'equipment:equipment_delete' equipment.pk %}" class="btn">Удалить</a>
+<a href="{% url 'equipment:equipment_reserve' equipment.pk %}" class="btn">Забронировать</a>
+<a href="{% url 'equipment:equipment_list' %}" class="btn">Назад к списку</a>
 {% endblock content %}
