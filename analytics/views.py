@@ -3,6 +3,7 @@ from django.shortcuts import render
 from django.db.models import Count
 from .models import PageVisit, UserAction
 from .serializers import PageVisitSerializer, UserActionSerializer
+from django.db.models.functions import TruncDate
 
 
 class PageVisitViewSet(viewsets.ModelViewSet):
@@ -16,33 +17,54 @@ class UserActionViewSet(viewsets.ModelViewSet):
 
 
 def page_visits_chart(request):
-    visits = PageVisit.objects.extra(select={'day': 'date(timestamp)'}).values('day').annotate(
-        count=Count('id')).order_by('day')
-    labels = [visit['day'].strftime('%Y-%m-%d') for visit in visits]
-    data = [visit['count'] for visit in visits]
+    data = (
+        PageVisit.objects
+        .annotate(date=TruncDate('timestamp'))
+        .values('date')
+        .annotate(visits=Count('id'))
+        .order_by('date')
+    )
 
-    context = {
+    labels = [item['date'].isoformat() for item in data]
+    values = [item['visits'] for item in data]
+
+    return render(request, 'analytics/page_visits.html', {
         'labels': labels,
-        'data': data,
-    }
-    return render(request, 'analytics/page_visits.html', context)
+        'data': values
+    })
 
 
 def user_actions_chart(request):
-    actions = UserAction.objects.extra(select={'day': 'date(timestamp)'}).values('day', 'action_type').annotate(
-        count=Count('id')).order_by('day')
-    labels = sorted(set([action['day'].strftime('%Y-%m-%d') for action in actions]))
-    action_types = sorted(set([action['action_type'] for action in actions]))
+    data = (
+        UserAction.objects
+        .annotate(date=TruncDate('timestamp'))
+        .values('action_type', 'date')
+        .annotate(count=Count('id'))
+        .order_by('date')
+    )
 
-    data = {action_type: [0] * len(labels) for action_type in action_types}
+    # собираем уникальные даты и действия
+    dates = sorted({item['date'].isoformat() for item in data})
+    action_types = sorted({item['action_type'] for item in data})
 
-    for action in actions:
-        day_index = labels.index(action['day'].strftime('%Y-%m-%d'))
-        data[action['action_type']][day_index] = action['count']
+    datasets = []
+    for idx, action in enumerate(action_types):
+        action_data = []
+        for date in dates:
+            count = next(
+                (item['count'] for item in data if item['action_type'] == action and item['date'].isoformat() == date),
+                0
+            )
+            action_data.append(count)
 
-    context = {
-        'labels': labels,
-        'data': data,
-        'action_types': action_types,
-    }
-    return render(request, 'analytics/user_actions.html', context)
+        datasets.append({
+            'label': action,
+            'data': action_data,
+            'borderColor': f'rgba({(idx * 60) % 255}, 99, 132, 1)',
+            'borderWidth': 1
+        })
+
+    return render(request, 'analytics/user_actions.html', {
+        'labels': dates,
+        'datasets': datasets,
+    })

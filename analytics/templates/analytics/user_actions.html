@@ -15,16 +15,7 @@
             type: 'line',
             data: {
                 labels: {{ labels|safe }},
-                datasets: [
-                    {% for action_type in action_types %}
-                    {
-                        label: '{{ action_type }}',
-                        data: {{ data[action_type]|safe }},
-                        borderColor: '{{ "rgba(" ~ forloop.counter0|add:"50"|mod:255 ~ ", 99, 132, 1)" }}',
-                        borderWidth: 1
-                    },
-                    {% endfor %}
-                ]
+                datasets: {{ datasets|safe }}
             },
             options: {
                 scales: {
