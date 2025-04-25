@@ -27,7 +27,7 @@ class EquipmentReservationViewSet(viewsets.ModelViewSet):
 @login_required
 def equipment_list(request):
     equipment = Equipment.objects.all()
-    return render(request, 'equipment/equipment_list.html', {'equipment': equipment})
+    return render(request, 'equipment/equipment_list.html', {'equipment_list': equipment})
 
 
 @login_required
@@ -41,8 +41,10 @@ def equipment_create(request):
     if request.method == 'POST':
         form = EquipmentForm(request.POST)
         if form.is_valid():
-            form.save()
-            return HttpResponseRedirect('/equipment/')
+            equipment = form.save(commit=False)
+            equipment.owner = request.user
+            equipment.save()
+            return redirect('equipment:equipment_list')
     else:
         form = EquipmentForm()
     return render(request, 'equipment/equipment_form.html', {'form': form})

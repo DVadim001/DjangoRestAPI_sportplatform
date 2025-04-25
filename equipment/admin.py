@@ -4,9 +4,9 @@ from .models import Equipment, EquipmentReservation
 
 @admin.register(Equipment)
 class EquipmentAdmin(admin.ModelAdmin):
-    list_display = ('name', 'status', 'created_at', 'updated_at')
+    list_display = ('name', 'is_available', 'created_at', 'updated_at')
     search_fields = ('name',)
-    list_filter = ('status',)
+    list_filter = ('is_available',)
 
 
 @admin.register(EquipmentReservation)

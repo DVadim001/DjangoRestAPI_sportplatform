@@ -5,7 +5,15 @@ from django.core.exceptions import ValidationError
 class EquipmentForm(forms.ModelForm):
     class Meta:
         model = Equipment
-        fields = ['name', 'description', 'status']
+        fields = ['name', 'description', 'quantity']
+        labels = {
+            'name': 'Название',
+            'description': 'Описание',
+            'quantity': 'Количество',
+        }
+        widgets = {
+            'description': forms.Textarea(attrs={'rows': 3}),
+        }
 
 class EquipmentReservationForm(forms.ModelForm):
     class Meta:

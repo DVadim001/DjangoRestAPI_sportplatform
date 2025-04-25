@@ -9,6 +9,8 @@ from clubs.models import Club
 
 
 class CustomUserCreationForm(UserCreationForm):
+    username = forms.CharField(max_length=150, required=True)  # ← ДОБАВЬ ЭТО ПОЛЕ
+
     first_name = forms.CharField(max_length=30, required=True)
     last_name = forms.CharField(max_length=30, required=True)
     phone = forms.CharField(max_length=15, required=True)
@@ -16,7 +18,7 @@ class CustomUserCreationForm(UserCreationForm):
 
     class Meta:
         model = User
-        fields = ['first_name', 'last_name', 'phone', 'email', 'password1', 'password2']
+        fields = ['username', 'first_name', 'last_name', 'phone', 'email', 'password1', 'password2']
 
 
 class UserProfileForm(forms.ModelForm):

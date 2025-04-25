@@ -4,19 +4,20 @@ from events.models import Event
 
 
 class Equipment(models.Model):
-    name = models.CharField(max_length=255)
-    description = models.TextField(blank=True, null=True)
-    status_choices = [
-        ('available', 'Available'),
-        ('in_use', 'In Use'),
-        ('maintenance', 'Maintenance'),
-    ]
-    status = models.CharField(max_length=50, choices=status_choices, default='available')
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
+    name = models.CharField("Название", max_length=100)
+    description = models.TextField("Описание", blank=True)
+    quantity = models.PositiveIntegerField("Количество")
+    is_available = models.BooleanField("Доступно", default=True)
+    owner = models.ForeignKey(User, verbose_name="Владелец", on_delete=models.CASCADE)
+    created_at = models.DateTimeField("Создано", auto_now_add=True)
+    updated_at = models.DateTimeField("Обновлено", auto_now=True)
 
     def __str__(self):
         return self.name
+
+    class Meta:
+        verbose_name = "Инвентарь"
+        verbose_name_plural = "Инвентарь"
 
 
 class EquipmentReservation(models.Model):
@@ -32,6 +33,6 @@ class EquipmentReservation(models.Model):
 
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)
-        if self.equipment.status != 'in_use':
-            self.equipment.status = 'in_use'
+        if self.equipment.is_available:
+            self.equipment.is_available = False  # теперь булево
             self.equipment.save()
