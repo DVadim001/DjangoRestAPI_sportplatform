@@ -6,8 +6,10 @@ from django.shortcuts import get_object_or_404
 from rest_framework import viewsets
 from .serializers import RegistrationSerializer
 
+from django.contrib.auth.decorators import login_required
 from django.views.decorators.http import require_POST
-from django.contrib import messages
+from events.models import Event
+from .models import Registration
 
 
 class RegistrationViewSet(viewsets.ModelViewSet):
@@ -46,3 +48,15 @@ def register_for_event(request):
     else:
         form = RegistrationForm()
     return render(request, 'registrations/registration_form.html', {'form': form})
+
+
+@login_required
+@require_POST
+def register_for_event_specific(request, event_id):
+    event = get_object_or_404(Event, id=event_id)
+
+    # Проверка, не зарегистрирован ли уже пользователь
+    if not Registration.objects.filter(user=request.user, event=event).exists():
+        Registration.objects.create(user=request.user, event=event)
+
+    return redirect('registrations:registration_list')

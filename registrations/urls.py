@@ -43,6 +43,8 @@ urlpatterns = [
     path('create/', views.register_for_event, name='register_for_event'),
     path('', include(router.urls)),
     path('cancel/<int:registration_id>/', views.cancel_registration, name='cancel_registration'),
+    path('register/<int:event_id>/', views.register_for_event_specific, name='register_for_event_specific'),
+
 
 
 ]

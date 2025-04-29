@@ -14,4 +14,14 @@
     <a href="{% url 'events:event_edit' event.id %}" class="btn">Редактировать</a>
     <a href="{% url 'events:event_delete' event.id %}" class="btn btn-danger">Удалить</a>
 {% endif %}
+
+{% if user.is_authenticated %}
+    <form method="post" action="{% url 'registrations:register_for_event_specific' event.id %}">
+        {% csrf_token %}
+        <button type="submit">Зарегистрироваться</button>
+    </form>
+{% else %}
+    <a href="{% url 'users:login' %}">Войдите для регистрации на мероприятие</a>
+{% endif %}
+
 {% endblock content %}
