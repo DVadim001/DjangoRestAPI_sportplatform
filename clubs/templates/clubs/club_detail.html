@@ -6,6 +6,27 @@
 <h1>{{ club.name }}</h1>
 <p>{{ club.description }}</p>
 
+<h3>Участники клуба:</h3>
+<ul>
+    {% for membership in memberships %}
+        <li>{{ membership.user.username }}{% if membership.is_admin %} (админ){% endif %}</li>
+    {% empty %}
+        <li>Нет участников</li>
+    {% endfor %}
+</ul>
+
+{% if user.is_authenticated %}
+    {% if not memberships|filter:"user.id=user.id" %}
+        <form method="post" action="{% url 'clubs:join_club' club.id %}">
+            {% csrf_token %}
+            <button type="submit">Вступить в клуб</button>
+        </form>
+    {% endif %}
+{% else %}
+    <a href="{% url 'users:login' %}">Войдите, чтобы вступить в клуб</a>
+{% endif %}
+
+
 <a href="{% url 'clubs:club_edit' club.id %}" class="btn">Редактировать</a>
 <a href="{% url 'clubs:club_delete' club.id %}" class="btn">Удалить</a>
 {% endblock content %}

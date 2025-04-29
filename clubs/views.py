@@ -1,11 +1,15 @@
-from django.shortcuts import render, redirect, get_object_or_404
-from django.contrib.auth.decorators import login_required
+from django.shortcuts import render
 from django.contrib import messages
-from .models import Club, Membership
+
 from .forms import ClubForm
 from .serializers import ClubSerializer, MembershipSerializer
 from rest_framework import viewsets
-from analytics.models import UserAction  # если используешь аналитику
+from analytics.models import UserAction
+
+from django.contrib.auth.decorators import login_required
+from django.views.decorators.http import require_POST
+from .models import Club, Membership
+from django.shortcuts import get_object_or_404, redirect
 
 
 class ClubViewSet(viewsets.ModelViewSet):
@@ -25,9 +29,10 @@ def club_list(request):
 
 
 @login_required
-def club_detail(request, pk):
-    club = get_object_or_404(Club, pk=pk)
-    return render(request, 'clubs/club_detail.html', {'club': club})
+def club_detail(request, club_id):
+    club = get_object_or_404(Club, id=club_id)
+    memberships = club.memberships.select_related('user')
+    return render(request, 'clubs/club_detail.html', {'club': club, 'memberships': memberships})
 
 
 @login_required
@@ -86,3 +91,15 @@ def club_delete(request, pk):
         messages.success(request, 'Клуб удалён.')
         return redirect('clubs:club_list')
     return render(request, 'clubs/club_confirm_delete.html', {'club': club})
+
+
+@login_required
+@require_POST
+def join_club(request, club_id):
+    club = get_object_or_404(Club, id=club_id)
+
+    # Проверка: не является ли пользователь уже участником
+    if not Membership.objects.filter(user=request.user, club=club).exists():
+        Membership.objects.create(user=request.user, club=club, is_admin=False)
+
+    return redirect('clubs:club_detail', club_id=club.id)

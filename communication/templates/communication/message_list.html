@@ -10,7 +10,7 @@
         <li>
             <strong>От:</strong> {{ message.sender.username }}<br>
             <a href="{% url 'communication:message_detail' message.pk %}">
-                {{ message.content|truncatewords:10 }}
+                {{ message.body|truncatewords:10 }}
             </a>
         </li>
     {% empty %}
