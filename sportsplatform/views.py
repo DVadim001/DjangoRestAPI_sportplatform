@@ -2,18 +2,20 @@ from django.shortcuts import render
 from users.models import UserProfile
 from events.models import Event, Participant
 from django.db.models import Q
-
+from schedules.models import Schedule
 
 def main_view(request):
-    # Получить данные из приложения users
+    # Случайные пользователи (до 10)
     random_users = UserProfile.objects.order_by('?')[:10]
 
-    # Получить данные из других приложений аналогичным образом
+    # Ближайшие публичные события (до 5)
+    schedules = Schedule.objects.filter(is_private=False).order_by('start_time')[:5]
 
     context = {
         'users_data': random_users,
-        # Добавить другие данные в контекст
+        'schedules': schedules,
     }
+
     return render(request, 'main.html', context)
 
 

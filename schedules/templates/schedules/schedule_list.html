@@ -3,13 +3,13 @@
 
 {% block content %}
 <h2>Список запланированных событий</h2>
-<a href="{% url 'schedules:create' %}">Создать новое событие</a>
+<a href="{% url 'schedules:schedule_create' %}">Создать новое событие</a>
 <ul>
     {% for schedule in schedules %}
     <li>{{ schedule.title }} ({{ schedule.start_time }} - {{ schedule.end_time }})
-        <a href="{% url 'schedule:schedule_detail' schedule.id %}">Просмотр</a>
-        <a href="{% url 'schedule:schedule_edit' schedule.id %}">Редактирование</a>
-        <a href="{% url 'schedule:schedule_delete' schedule.id %}">Удалить</a>
+        <a href="{% url 'schedules:schedule_detail' schedule.id %}">Просмотр</a>
+        <a href="{% url 'schedules:schedule_edit' schedule.id %}">Редактирование</a>
+        <a href="{% url 'schedules:schedule_delete' schedule.id %}">Удалить</a>
     </li>
     {% empty %}
     <li>Нет запланированных событий.</li>

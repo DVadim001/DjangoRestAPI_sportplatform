@@ -23,6 +23,7 @@ urlpatterns += i18n_patterns(
     path('events/', include('events.urls', namespace='events')),
     path('equipment/', include('equipment.urls', namespace='equipment')),
     path('analytics/', include('analytics.urls', namespace='analytics')),
+    path('schedules/', include('schedules.urls', namespace='schedules')),
 
     prefix_default_language=False,
 

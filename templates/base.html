@@ -20,8 +20,9 @@
        <nav>
     <ul>
         <li><a href="{% url 'main' %}">Главная</a></li>
+
         {% if user.is_authenticated %}
-            <li><a href="{% url 'users:users_list' %}">Список пользователей</a></li>
+            <li><a href="{% url 'users:users_list' %}">Пользователи</a></li>
             <li><a href="{% url 'users:profile_view' user.id %}">Профиль</a></li>
             <li><a href="{% url 'users:edit_profile' %}">Редактировать профиль</a></li>
             <li><a href="{% url 'users:logout' %}">Выход</a></li>
@@ -30,16 +31,20 @@
             <li><a href="{% url 'users:login' %}">Вход</a></li>
         {% endif %}
 
-        <!-- Ссылки на основные разделы -->
+        <!-- Основные разделы -->
         <li><a href="{% url 'events:events_list' %}">События</a></li>
         <li><a href="{% url 'clubs:club_list' %}">Клубы</a></li>
         <li><a href="{% url 'equipment:equipment_list' %}">Инвентарь</a></li>
-        <li><a href="{% url 'analytics:analytics_home' %}">Аналитика</a></li>
-        <li><a href="{% url 'registrations:registration_list' %}">Регистрации</a></li>
-        <li><a href="{% url 'results:result_list' %}">Результаты</a></li>
+        <li><a href="{% url 'schedules:schedule_list' %}">Расписания</a></li>
         <li><a href="{% url 'venues:venue_list' %}">Места проведения</a></li>
+
+        <!-- Системные разделы -->
+        <li><a href="{% url 'results:result_list' %}">Результаты</a></li>
+        <li><a href="{% url 'registrations:registration_list' %}">Регистрации</a></li>
+        <li><a href="{% url 'analytics:analytics_home' %}">Аналитика</a></li>
     </ul>
 </nav>
+
 
 
 

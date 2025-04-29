@@ -8,7 +8,7 @@
 <form method="post">
     {% csrf_token %}
     <input type="submit" value="Удалить">
-    <a href="{% url 'schedule:schedule_detail' schedule.id %}">Отмена</a>
+    <a href="{% url 'schedules:schedule_detail' schedule.id %}">Отмена</a>
 </form>
 
 {% endblock content %}
