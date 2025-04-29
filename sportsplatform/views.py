@@ -3,19 +3,21 @@ from users.models import UserProfile
 from events.models import Event, Participant
 from django.db.models import Q
 from schedules.models import Schedule
+from communication.models import Message
 
 def main_view(request):
-    # Случайные пользователи (до 10)
     random_users = UserProfile.objects.order_by('?')[:10]
-
-    # Ближайшие публичные события (до 5)
     schedules = Schedule.objects.filter(is_private=False).order_by('start_time')[:5]
+
+    user_messages = []
+    if request.user.is_authenticated:
+        user_messages = Message.objects.filter(recipient=request.user).order_by('-sent_at')[:5]
 
     context = {
         'users_data': random_users,
         'schedules': schedules,
+        'user_messages': user_messages,
     }
-
     return render(request, 'main.html', context)
 
 

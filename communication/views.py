@@ -5,13 +5,13 @@ from django.contrib.auth.decorators import login_required
 
 @login_required
 def message_list(request):
-    messages = Message.objects.filter(receiver=request.user)
-    return render(request, 'message_list.html', {'messages': messages})
+    messages = Message.objects.filter(recipient=request.user).order_by('-sent_at')
+    return render(request, 'communication/message_list.html', {'messages': messages})
 
 @login_required
 def message_detail(request, pk):
     message = get_object_or_404(Message, pk=pk)
-    return render(request, 'message_detail.html', {'message': message})
+    return render(request, 'communication/message_detail.html', {'message': message})
 
 @login_required
 def message_create(request):
@@ -24,7 +24,7 @@ def message_create(request):
             return redirect('communication:message_list')
     else:
         form = MessageForm()
-    return render(request, 'message_form.html', {'form': form})
+    return render(request, 'communication/message_form.html', {'form': form})
 
 @login_required
 def notification_list(request):

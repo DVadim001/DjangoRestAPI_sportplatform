@@ -7,8 +7,8 @@ from .models import Message, Notification
 @receiver(post_save, sender=Message)
 def message_sent(sender, instance, created, **kwargs):
     if created:
-        # Создание уведомления для получателя сообщения
-        Notification.objects.create(user=instance.user,
-                                    message=f'Новое сообщение от {instance.sender.username}: {instance.text[:50]}...',
-                                    category='message')
+        Notification.objects.create(
+            user=instance.recipient,
+            message=f'Новое сообщение от {instance.sender.username}: {instance.body[:50]}...'
+        )
 

@@ -29,4 +29,19 @@
     <a href="{% url 'schedules:schedule_list' %}">Смотреть все события</a>
 </div>
 
+<div>
+    <h2>Ваши сообщения:</h2>
+    <ul>
+    {% for message in user_messages %}
+        <li>
+            <a href="{% url 'communication:message_detail' message.id %}">{{ message.subject }}</a>
+            ({{ message.sent_at|date:"d.m.Y H:i" }})
+        </li>
+    {% empty %}
+        <li>Нет новых сообщений</li>
+    {% endfor %}
+    </ul>
+    <a href="{% url 'communication:message_list' %}">Все сообщения</a>
+</div>
+
 {% endblock content %}

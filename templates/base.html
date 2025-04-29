@@ -17,44 +17,57 @@
 
 <body>
     <header>
-       <nav>
-    <ul>
-        <li><a href="{% url 'main' %}">Главная</a></li>
+    <nav>
+        <ul>
+            <!-- Здесь только ссылки -->
+            <li><a href="{% url 'main' %}">Главная</a></li>
+            {% if user.is_authenticated %}
+                <li><a href="{% url 'users:users_list' %}">Пользователи</a></li>
+                <li><a href="{% url 'users:profile_view' user.id %}">Профиль</a></li>
+                <li><a href="{% url 'users:edit_profile' %}">Редактировать профиль</a></li>
+                <li><a href="{% url 'users:logout' %}">Выход</a></li>
+            {% else %}
+                <li><a href="{% url 'users:register' %}">Регистрация</a></li>
+                <li><a href="{% url 'users:login' %}">Вход</a></li>
+            {% endif %}
+            <li><a href="{% url 'events:events_list' %}">События</a></li>
+            <li><a href="{% url 'clubs:club_list' %}">Клубы</a></li>
+            <li><a href="{% url 'equipment:equipment_list' %}">Инвентарь</a></li>
+            <li><a href="{% url 'schedules:schedule_list' %}">Расписания</a></li>
+            <li><a href="{% url 'venues:venue_list' %}">Места проведения</a></li>
+            <li><a href="{% url 'results:result_list' %}">Результаты</a></li>
+            <li><a href="{% url 'registrations:registration_list' %}">Регистрации</a></li>
+            <li><a href="{% url 'analytics:analytics_home' %}">Аналитика</a></li>
+            <li><a href="{% url 'payments:payment_list' %}">Платежи</a></li>
+            <li><a href="{% url 'communication:message_list' %}">Сообщения</a></li> <!-- Вкладка на все сообщения -->
+        </ul>
+    </nav>
 
-        {% if user.is_authenticated %}
-            <li><a href="{% url 'users:users_list' %}">Пользователи</a></li>
-            <li><a href="{% url 'users:profile_view' user.id %}">Профиль</a></li>
-            <li><a href="{% url 'users:edit_profile' %}">Редактировать профиль</a></li>
-            <li><a href="{% url 'users:logout' %}">Выход</a></li>
-        {% else %}
-            <li><a href="{% url 'users:register' %}">Регистрация</a></li>
-            <li><a href="{% url 'users:login' %}">Вход</a></li>
+    <!-- Блок последних сообщений — ВНЕ навигации -->
+    {% if user.is_authenticated %}
+        {% if user_messages %}
+            <div>
+                <h3>Ваши последние сообщения:</h3>
+                <ul>
+                    {% for message in user_messages %}
+                        <li>
+                            <a href="{% url 'communication:message_detail' message.id %}">{{ message.subject }}</a>
+                            ({{ message.sent_at|date:"d.m.Y H:i" }})
+                        </li>
+                    {% endfor %}
+                </ul>
+                <a href="{% url 'communication:message_list' %}">Все сообщения</a>
+            </div>
         {% endif %}
+    {% endif %}
 
-        <!-- Основные разделы -->
-        <li><a href="{% url 'events:events_list' %}">События</a></li>
-        <li><a href="{% url 'clubs:club_list' %}">Клубы</a></li>
-        <li><a href="{% url 'equipment:equipment_list' %}">Инвентарь</a></li>
-        <li><a href="{% url 'schedules:schedule_list' %}">Расписания</a></li>
-        <li><a href="{% url 'venues:venue_list' %}">Места проведения</a></li>
-
-        <!-- Системные разделы -->
-        <li><a href="{% url 'results:result_list' %}">Результаты</a></li>
-        <li><a href="{% url 'registrations:registration_list' %}">Регистрации</a></li>
-        <li><a href="{% url 'analytics:analytics_home' %}">Аналитика</a></li>
-        <li><a href="{% url 'payments:payment_list' %}">Платежи</a></li>
-    </ul>
-</nav>
-
-
-
-
-        <form method="get" action="{% url 'global_search' %}">
-            {% csrf_token %}
-            <input type="text" name="q" placeholder="Поиск...">
-            <button type="submit">Поиск</button>
-        </form>
-    </header>
+    <!-- Поиск -->
+    <form method="get" action="{% url 'global_search' %}">
+        {% csrf_token %}
+        <input type="text" name="q" placeholder="Поиск...">
+        <button type="submit">Поиск</button>
+    </form>
+</header>
 
     <main>
         {% block content %}
