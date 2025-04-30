@@ -1,5 +1,7 @@
 from django.urls import path
 from . import views
+from rest_framework.routers import DefaultRouter
+from .views import MessageViewSet, NotificationViewSet
 
 app_name = 'communication'
 
@@ -14,3 +16,9 @@ urlpatterns = [
     path('messages/<int:pk>/delete/', views.message_delete, name='message_delete'),
 
 ]
+
+router = DefaultRouter()
+router.register(r'api/messages', MessageViewSet, basename='message')
+router.register(r'api/notifications', NotificationViewSet, basename='notification')
+
+urlpatterns += router.urls

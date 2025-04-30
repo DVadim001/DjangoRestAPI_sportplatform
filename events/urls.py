@@ -1,6 +1,9 @@
 from django.urls import path
 from . import views
 
+from rest_framework.routers import DefaultRouter
+from .views import EventViewSet
+
 app_name = 'events'
 
 urlpatterns = [
@@ -13,3 +16,8 @@ urlpatterns = [
     path('<int:event_id>/delete', views.event_delete, name='event_delete'),
     path('event/<int:event_id>/register/', views.register_for_event, name='register_for_event')
 ]
+
+router = DefaultRouter()
+router.register(r'api/events', EventViewSet, basename='event')
+
+urlpatterns += router.urls

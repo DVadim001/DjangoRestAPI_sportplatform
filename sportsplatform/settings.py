@@ -53,6 +53,8 @@ INSTALLED_APPS = [
     'clubs',
     'taggit',
     'django_select2',
+    'drf_spectacular',
+    'drf_spectacular_sidecar',
 
 ]
 
@@ -161,3 +163,7 @@ LOGIN_REDIRECT_URL = '/'
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 LOGIN_URL = '/users/login/'
+
+REST_FRAMEWORK = {
+    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
+}

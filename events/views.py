@@ -9,6 +9,11 @@ from .forms import EventForm, ParticipantForm
 
 from analytics.models import UserAction
 
+from rest_framework import viewsets
+from rest_framework.permissions import IsAuthenticated
+from .serializers import EventSerializer
+
+
 # Создание нового события
 @login_required
 def create_new_event(request):
@@ -121,3 +126,11 @@ def event_delete(request, event_id):
         return redirect('events:events_list')
     context = {'event': event}
     return render(request, 'events/confirm_delete.html', context)
+
+class EventViewSet(viewsets.ModelViewSet):
+    queryset = Event.objects.all()
+    serializer_class = EventSerializer
+    permission_classes = [IsAuthenticated]
+
+    def perform_create(self, serializer):
+        serializer.save(organizer=self.request.user)

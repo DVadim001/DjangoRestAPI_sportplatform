@@ -1,7 +1,12 @@
 from django.shortcuts import render, get_object_or_404, redirect
-from .models import Message, Notification
 from .forms import MessageForm
 from django.contrib.auth.decorators import login_required
+
+from .models import Message, Notification
+from .serializers import MessageSerializer, NotificationSerializer
+
+from rest_framework import viewsets
+from rest_framework.permissions import IsAuthenticated
 
 @login_required
 def message_list(request):
@@ -52,3 +57,23 @@ def message_delete(request, pk):
         message.delete()
         return redirect('communication:message_list')
     return render(request, 'communication/message_confirm_delete.html', {'message': message})
+
+class MessageViewSet(viewsets.ModelViewSet):
+    queryset = Message.objects.all()
+    serializer_class = MessageSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        return Message.objects.filter(recipient=self.request.user)
+
+    def perform_create(self, serializer):
+        serializer.save(sender=self.request.user)
+
+
+class NotificationViewSet(viewsets.ModelViewSet):
+    queryset = Notification.objects.all()
+    serializer_class = NotificationSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        return Notification.objects.filter(user=self.request.user)

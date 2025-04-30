@@ -3,6 +3,10 @@ from django.contrib.auth.decorators import login_required
 from .models import Result, Event
 from .forms import ResultForm
 
+from rest_framework import viewsets
+from rest_framework.permissions import IsAuthenticated
+from .serializers import ResultSerializer
+
 @login_required
 def result_list(request):
     results = Result.objects.all()
@@ -28,3 +32,11 @@ def add_result(request, event_id):
     else:
         form = ResultForm()
     return render(request, 'results/add_result.html', {'form': form, 'event': event})
+
+class ResultViewSet(viewsets.ModelViewSet):
+    queryset = Result.objects.all()
+    serializer_class = ResultSerializer
+    permission_classes = [IsAuthenticated]
+
+    def perform_create(self, serializer):
+        serializer.save(participant=self.request.user)
