@@ -16,7 +16,7 @@
 </ul>
 
 {% if user.is_authenticated %}
-    {% if not memberships|filter:"user.id=user.id" %}
+    {% if not is_member %}
         <form method="post" action="{% url 'clubs:join_club' club.id %}">
             {% csrf_token %}
             <button type="submit">Вступить в клуб</button>

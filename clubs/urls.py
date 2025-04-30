@@ -18,5 +18,4 @@ urlpatterns = [
     path('<int:pk>/edit/', views.club_edit, name='club_edit'),
     path('<int:pk>/delete/', views.club_delete, name='club_delete'),
     path('<int:club_id>/join/', views.join_club, name='join_club'),
-
 ]

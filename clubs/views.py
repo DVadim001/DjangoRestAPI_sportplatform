@@ -29,11 +29,15 @@ def club_list(request):
 
 
 @login_required
-def club_detail(request, club_id):
-    club = get_object_or_404(Club, id=club_id)
-    memberships = club.memberships.select_related('user')
-    return render(request, 'clubs/club_detail.html', {'club': club, 'memberships': memberships})
-
+def club_detail(request, pk):
+    club = get_object_or_404(Club, id=pk)
+    memberships = club.membership_set.select_related('user')
+    is_member = memberships.filter(user=request.user).exists()  # ⬅ добавили проверку
+    return render(request, 'clubs/club_detail.html', {
+        'club': club,
+        'memberships': memberships,
+        'is_member': is_member,  # ⬅ добавили в контекст
+    })
 
 @login_required
 def club_create(request):
