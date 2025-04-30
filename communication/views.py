@@ -43,3 +43,12 @@ def notification_confirm_delete(request, pk):
         notification.delete()
         return redirect('communication:notification_list')
     return render(request, 'notification_confirm_delete.html', {'notification': notification})
+
+
+@login_required
+def message_delete(request, pk):
+    message = get_object_or_404(Message, pk=pk, recipient=request.user)
+    if request.method == 'POST':
+        message.delete()
+        return redirect('communication:message_list')
+    return render(request, 'communication/message_confirm_delete.html', {'message': message})
