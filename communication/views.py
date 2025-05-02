@@ -8,6 +8,10 @@ from .serializers import MessageSerializer, NotificationSerializer
 from rest_framework import viewsets
 from rest_framework.permissions import IsAuthenticated
 
+from rest_framework.permissions import IsAuthenticatedOrReadOnly
+from rest_framework.permissions import AllowAny
+
+
 @login_required
 def message_list(request):
     messages = Message.objects.filter(recipient=request.user).order_by('-sent_at')
@@ -61,9 +65,11 @@ def message_delete(request, pk):
 class MessageViewSet(viewsets.ModelViewSet):
     queryset = Message.objects.all()
     serializer_class = MessageSerializer
-    permission_classes = [IsAuthenticated]
+    permission_classes = [AllowAny]
 
     def get_queryset(self):
+        if not self.request.user.is_authenticated:
+            return Message.objects.none()
         return Message.objects.filter(recipient=self.request.user)
 
     def perform_create(self, serializer):
@@ -73,7 +79,7 @@ class MessageViewSet(viewsets.ModelViewSet):
 class NotificationViewSet(viewsets.ModelViewSet):
     queryset = Notification.objects.all()
     serializer_class = NotificationSerializer
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticatedOrReadOnly]
 
     def get_queryset(self):
         return Notification.objects.filter(user=self.request.user)

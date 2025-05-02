@@ -4,7 +4,7 @@ from .models import Equipment, EquipmentReservation
 class EquipmentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Equipment
-        fields = ['id', 'name', 'description', 'status', 'created_at', 'updated_at']
+        fields = ['id', 'name', 'description', 'created_at', 'updated_at']
 
 class EquipmentReservationSerializer(serializers.ModelSerializer):
     class Meta:

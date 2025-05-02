@@ -12,6 +12,7 @@ from analytics.models import UserAction
 from rest_framework import viewsets
 from rest_framework.permissions import IsAuthenticated
 from .serializers import EventSerializer
+from rest_framework.permissions import AllowAny, IsAuthenticatedOrReadOnly
 
 
 # Создание нового события
@@ -130,7 +131,7 @@ def event_delete(request, event_id):
 class EventViewSet(viewsets.ModelViewSet):
     queryset = Event.objects.all()
     serializer_class = EventSerializer
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticatedOrReadOnly]
 
     def perform_create(self, serializer):
         serializer.save(organizer=self.request.user)

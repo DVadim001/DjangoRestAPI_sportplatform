@@ -13,7 +13,7 @@ from .forms import CustomUserCreationForm, UserProfileForm, UserSettingsForm
 from .serializers import UserProfileSerializer
 
 from django.contrib.auth.decorators import login_required
-
+from rest_framework.permissions import AllowAny
 
 def users_list(request):
     users = User.objects.all()
@@ -117,7 +117,7 @@ def permission_denied_view(request):
 class UserProfileViewSet(viewsets.ModelViewSet):
     queryset = UserProfile.objects.all()
     serializer_class = UserProfileSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [AllowAny]
 
     def get_queryset(self):
         return UserProfile.objects.filter(user=self.request.user)

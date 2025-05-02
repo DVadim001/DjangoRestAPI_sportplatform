@@ -5,7 +5,7 @@ from results.models import Result
 class EventSerializer(serializers.ModelSerializer):
     class Meta:
         model = Event
-        fields = ['id', 'name', 'date', 'location', 'description']
+        fields = ['id', 'name', 'start_time', 'end_time', 'location', 'description']
 
 
 class ResultSerializer(serializers.ModelSerializer):
