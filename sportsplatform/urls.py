@@ -48,6 +48,7 @@ urlpatterns += i18n_patterns(
     path('equipment/', include(('equipment.urls', 'equipment'), namespace='equipment')),
     path('analytics/', include(('analytics.urls', 'analytics'), namespace='analytics')),
     path('schedules/', include(('schedules.urls', 'schedules'), namespace='schedules')),
+    path('api/users/', include('users.urls')),
 
     prefix_default_language=False,
 )
