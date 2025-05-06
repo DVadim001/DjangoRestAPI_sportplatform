@@ -3,6 +3,8 @@ from django.contrib.auth import views as auth_views
 from . import views
 from rest_framework.routers import DefaultRouter
 from .views_api import CurrentUserView
+from django.contrib.auth.views import PasswordChangeView
+from django.urls import reverse_lazy
 
 app_name = 'users'
 
@@ -23,4 +25,21 @@ urlpatterns = [
 
     # Добавляем маршруты DRF API
     path('api/', include(router.urls)),
+]
+
+from rest_framework_simplejwt.views import (
+    TokenObtainPairView,
+    TokenRefreshView,
+)
+
+urlpatterns += [
+    path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
+    path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
+]
+
+urlpatterns += [
+    path('change-password/', PasswordChangeView.as_view(
+        template_name='users/change_password.html',
+        success_url=reverse_lazy('users:login')  # или куда ты хочешь перенаправить
+    ), name='change_password'),
 ]
