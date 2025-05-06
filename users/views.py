@@ -15,6 +15,7 @@ from .serializers import UserProfileSerializer
 from django.contrib.auth.decorators import login_required
 from rest_framework.permissions import AllowAny
 
+
 def users_list(request):
     users = User.objects.all()
     return render(request, 'users/users_list.html', {'users': users})
@@ -130,3 +131,6 @@ class UserProfileViewSet(viewsets.ModelViewSet):
         profile = self.get_queryset().first()
         serializer = self.get_serializer(profile)
         return Response(serializer.data)
+
+def about_view(request):
+    return render(request, 'static_pages/about.html')
