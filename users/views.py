@@ -131,6 +131,3 @@ class UserProfileViewSet(viewsets.ModelViewSet):
         profile = self.get_queryset().first()
         serializer = self.get_serializer(profile)
         return Response(serializer.data)
-
-def about_view(request):
-    return render(request, 'static_pages/about.html')

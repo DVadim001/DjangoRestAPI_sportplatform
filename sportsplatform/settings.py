@@ -56,6 +56,7 @@ INSTALLED_APPS = [
     'django_select2',
     'drf_spectacular',
     'drf_spectacular_sidecar',
+    'pages',
 
 ]
 

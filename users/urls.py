@@ -5,7 +5,7 @@ from rest_framework.routers import DefaultRouter
 from .views_api import CurrentUserView
 from django.contrib.auth.views import PasswordChangeView
 from django.urls import reverse_lazy
-from .views import about_view
+
 
 app_name = 'users'
 
@@ -43,8 +43,4 @@ urlpatterns += [
         template_name='users/change_password.html',
         success_url=reverse_lazy('users:login')  # или куда ты хочешь перенаправить
     ), name='change_password'),
-]
-
-urlpatterns += [
-    path('about/', about_view, name='about'),
 ]
