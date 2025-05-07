@@ -7,13 +7,17 @@ from .serializers import PaymentSerializer, ServiceTypeSerializer
 
 from analytics.utils import log_user_action
 
+
+
 class PaymentViewSet(viewsets.ModelViewSet):
     queryset = Payment.objects.all()
     serializer_class = PaymentSerializer
 
+
 class ServiceTypeViewSet(viewsets.ModelViewSet):
     queryset = ServiceType.objects.all()
     serializer_class = ServiceTypeSerializer
+
 
 @login_required
 def payment_list(request):

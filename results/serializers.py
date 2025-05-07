@@ -14,4 +14,9 @@ class ResultSerializer(serializers.ModelSerializer):
     class Meta:
         model = Result
         fields = ['id', 'event', 'participant', 'score', 'position']
-        depth = 1  # Это позволит включить подробные данные о связанных объектах, например, об участниках
+        depth = 1
+
+class AdminResultSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Result
+        fields = '__all__'

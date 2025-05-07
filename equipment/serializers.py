@@ -10,3 +10,8 @@ class EquipmentReservationSerializer(serializers.ModelSerializer):
     class Meta:
         model = EquipmentReservation
         fields = ['id', 'equipment', 'user', 'event', 'start_date', 'end_date', 'created_at']
+
+class AdminEquipmentSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Equipment
+        fields = '__all__'

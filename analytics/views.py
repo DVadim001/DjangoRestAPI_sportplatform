@@ -1,9 +1,11 @@
 from rest_framework import viewsets
 from django.shortcuts import render
 from django.db.models import Count
+from django.db.models.functions import TruncDate
+
+
 from .models import PageVisit, UserAction
 from .serializers import PageVisitSerializer, UserActionSerializer
-from django.db.models.functions import TruncDate
 
 
 class PageVisitViewSet(viewsets.ModelViewSet):
@@ -11,9 +13,11 @@ class PageVisitViewSet(viewsets.ModelViewSet):
     serializer_class = PageVisitSerializer
 
 
+
 class UserActionViewSet(viewsets.ModelViewSet):
     queryset = UserAction.objects.all()
     serializer_class = UserActionSerializer
+
 
 
 def page_visits_chart(request):
@@ -43,7 +47,6 @@ def user_actions_chart(request):
         .order_by('date')
     )
 
-    # собираем уникальные даты и действия
     dates = sorted({item['date'].isoformat() for item in data})
     action_types = sorted({item['action_type'] for item in data})
 

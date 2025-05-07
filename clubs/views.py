@@ -1,17 +1,16 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib import messages
-
-from .forms import ClubForm
-from .serializers import ClubSerializer, MembershipSerializer
-from rest_framework import viewsets
-from analytics.models import UserAction
-
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.http import require_POST
-from .models import Club, Membership
-from django.shortcuts import get_object_or_404, redirect
+from rest_framework import viewsets
+from drf_spectacular.openapi import AutoSchema
 
+from .forms import ClubForm
+from .models import Club, Membership
+from .serializers import ClubSerializer, MembershipSerializer
+from analytics.models import UserAction
 from analytics.utils import log_user_action
+
 
 class ClubViewSet(viewsets.ModelViewSet):
     queryset = Club.objects.all()
@@ -21,6 +20,7 @@ class ClubViewSet(viewsets.ModelViewSet):
 class MemberViewSet(viewsets.ModelViewSet):
     queryset = Membership.objects.all()
     serializer_class = MembershipSerializer
+
 
 
 @login_required
@@ -33,12 +33,13 @@ def club_list(request):
 def club_detail(request, pk):
     club = get_object_or_404(Club, id=pk)
     memberships = club.membership_set.select_related('user')
-    is_member = memberships.filter(user=request.user).exists()  # ⬅ добавили проверку
+    is_member = memberships.filter(user=request.user).exists()
     return render(request, 'clubs/club_detail.html', {
         'club': club,
         'memberships': memberships,
-        'is_member': is_member,  # ⬅ добавили в контекст
+        'is_member': is_member,
     })
+
 
 @login_required
 def club_create(request):
@@ -48,7 +49,6 @@ def club_create(request):
             club = form.save()
             Membership.objects.create(user=request.user, club=club, is_admin=True)
 
-            # логирование действия
             log_user_action(
                 request,
                 action="Создание клуба",
@@ -69,7 +69,6 @@ def club_create(request):
 def club_edit(request, pk):
     club = get_object_or_404(Club, pk=pk)
 
-    # Проверка, что пользователь — админ этого клуба
     if not Membership.objects.filter(user=request.user, club=club, is_admin=True).exists():
         messages.error(request, 'У вас нет прав для редактирования этого клуба.')
         return redirect('clubs:club_detail', pk=pk)
@@ -89,7 +88,6 @@ def club_edit(request, pk):
 def club_delete(request, pk):
     club = get_object_or_404(Club, pk=pk)
 
-    # Проверка, что пользователь — админ этого клуба
     if not Membership.objects.filter(user=request.user, club=club, is_admin=True).exists():
         messages.error(request, 'У вас нет прав для удаления этого клуба.')
         return redirect('clubs:club_detail', pk=pk)
@@ -106,7 +104,6 @@ def club_delete(request, pk):
 def join_club(request, club_id):
     club = get_object_or_404(Club, id=club_id)
 
-    # Проверка: не является ли пользователь уже участником
     if not Membership.objects.filter(user=request.user, club=club).exists():
         Membership.objects.create(user=request.user, club=club, is_admin=False)
 

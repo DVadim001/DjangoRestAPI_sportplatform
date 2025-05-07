@@ -12,3 +12,8 @@ class MembershipSerializer(serializers.ModelSerializer):
     class Meta:
         model = Membership
         fields = ['id', 'user', 'club', 'date_joined', 'is_admin']
+
+class AdminClubSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Club
+        fields = '__all__'  # для полной административной работы

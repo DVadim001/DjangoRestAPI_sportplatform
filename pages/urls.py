@@ -1,14 +1,11 @@
 from django.urls import path
-from .views import about_view
-from . import views
-
 from rest_framework.routers import DefaultRouter
+from . import views
 from .api_views import StaticPageViewSet
-
-from django.urls import path, include
 
 app_name = 'pages'
 
+# Основные страницы
 urlpatterns = [
     path('about/', views.about_view, name='about'),
     path('contacts/', views.contacts_view, name='contacts'),
@@ -17,9 +14,9 @@ urlpatterns = [
     path('faq/', views.faq_view, name='faq'),
 ]
 
+# API роутер
 router = DefaultRouter()
-router.register(r'pages', StaticPageViewSet, basename='staticpage')
+router.register(r'static-pages', StaticPageViewSet, basename='staticpage')
 
-urlpatterns += [
-    path('api/pages/', include('pages.api_urls')),
-]
+# Добавляем API-роуты напрямую без дополнительного 'api/'
+urlpatterns += router.urls

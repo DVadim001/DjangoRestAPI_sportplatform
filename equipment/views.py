@@ -13,6 +13,8 @@ from .serializers import EquipmentSerializer, EquipmentReservationSerializer
 
 from analytics.utils import log_user_action
 
+
+
 class EquipmentViewSet(viewsets.ModelViewSet):
     queryset = Equipment.objects.all()
     serializer_class = EquipmentSerializer

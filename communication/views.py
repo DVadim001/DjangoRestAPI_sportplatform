@@ -1,16 +1,15 @@
 from django.shortcuts import render, get_object_or_404, redirect
-from .forms import MessageForm
 from django.contrib.auth.decorators import login_required
 
+from .forms import MessageForm
 from .models import Message, Notification
 from .serializers import MessageSerializer, NotificationSerializer
 
 from rest_framework import viewsets
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly, AllowAny
 
-from rest_framework.permissions import IsAuthenticatedOrReadOnly
-from rest_framework.permissions import AllowAny
 
+# --- HTML Views ---
 
 @login_required
 def message_list(request):
@@ -36,6 +35,15 @@ def message_create(request):
     return render(request, 'communication/message_form.html', {'form': form})
 
 @login_required
+def message_delete(request, pk):
+    message = get_object_or_404(Message, pk=pk, recipient=request.user)
+    if request.method == 'POST':
+        message.delete()
+        return redirect('communication:message_list')
+    return render(request, 'communication/message_confirm_delete.html', {'message': message})
+
+
+@login_required
 def notification_list(request):
     notifications = Notification.objects.filter(user=request.user)
     return render(request, 'notification_list.html', {'notifications': notifications})
@@ -54,13 +62,7 @@ def notification_confirm_delete(request, pk):
     return render(request, 'notification_confirm_delete.html', {'notification': notification})
 
 
-@login_required
-def message_delete(request, pk):
-    message = get_object_or_404(Message, pk=pk, recipient=request.user)
-    if request.method == 'POST':
-        message.delete()
-        return redirect('communication:message_list')
-    return render(request, 'communication/message_confirm_delete.html', {'message': message})
+# --- API ViewSets ---
 
 class MessageViewSet(viewsets.ModelViewSet):
     queryset = Message.objects.all()

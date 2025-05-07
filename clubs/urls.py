@@ -1,18 +1,15 @@
-from django.urls import path, include
-from . import views
+from django.urls import path
 from rest_framework.routers import DefaultRouter
+from . import views
 
 app_name = 'clubs'
 
-
 router = DefaultRouter()
-router.register(f'clubs', views.ClubViewSet)
-router.register(f'memberships', views.MemberViewSet)
+router.register(r'clubs', views.ClubViewSet)
+router.register(r'memberships', views.MemberViewSet)
 
-
-urlpatterns = [
+urlpatterns = router.urls + [
     path('', views.club_list, name='club_list'),
-    path('api/', include(router.urls)),
     path('create/', views.club_create, name='club_create'),
     path('<int:pk>/', views.club_detail, name='club_detail'),
     path('<int:pk>/edit/', views.club_edit, name='club_edit'),
