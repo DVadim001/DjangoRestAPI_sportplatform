@@ -11,6 +11,7 @@ from .models import Equipment, EquipmentReservation
 from .forms import EquipmentForm, EquipmentReservationForm
 from .serializers import EquipmentSerializer, EquipmentReservationSerializer
 
+from analytics.utils import log_user_action
 
 class EquipmentViewSet(viewsets.ModelViewSet):
     queryset = Equipment.objects.all()
@@ -44,6 +45,17 @@ def equipment_create(request):
             equipment = form.save(commit=False)
             equipment.owner = request.user
             equipment.save()
+
+            # логирование действия
+            log_user_action(
+                request,
+                action="Создание оборудования",
+                metadata={
+                    "equipment_id": equipment.id,
+                    "equipment_name": equipment.name
+                }
+            )
+
             return redirect('equipment:equipment_list')
     else:
         form = EquipmentForm()

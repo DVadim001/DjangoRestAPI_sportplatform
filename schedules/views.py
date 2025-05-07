@@ -7,6 +7,7 @@ from .serializers import ScheduleSerializer, CategorySerializer
 
 from rest_framework import viewsets
 
+from analytics.utils import log_user_action
 
 class ScheduleViewSet(viewsets.ModelViewSet):
     queryset = Schedule.objects.all()
@@ -43,6 +44,17 @@ def schedule_create(request):
             schedule = form.save(commit=False)
             schedule.user = request.user
             schedule.save()
+
+            # логирование действия
+            log_user_action(
+                request,
+                action="Создание расписания",
+                metadata={
+                    "schedule_id": schedule.id,
+                    "title": getattr(schedule, 'title', None)
+                }
+            )
+
             return redirect('schedules:schedule_list')
     else:
         form = ScheduleForm()

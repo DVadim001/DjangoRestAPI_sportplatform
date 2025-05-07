@@ -11,6 +11,7 @@ from django.views.decorators.http import require_POST
 from events.models import Event
 from .models import Registration
 
+from analytics.utils import log_user_action
 
 class RegistrationViewSet(viewsets.ModelViewSet):
     queryset = Registration.objects.all()
@@ -44,6 +45,18 @@ def register_for_event(request):
             registration = form.save(commit=False)
             registration.user = request.user
             registration.save()
+
+            # логирование действия
+            log_user_action(
+                request,
+                action="Регистрация на событие",
+                metadata={
+                    "event_id": registration.event.id,
+                    "event_name": registration.event.name,
+                    "registration_id": registration.id
+                }
+            )
+
             return redirect('registrations:registration_list')
     else:
         form = RegistrationForm()

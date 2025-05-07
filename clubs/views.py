@@ -11,6 +11,7 @@ from django.views.decorators.http import require_POST
 from .models import Club, Membership
 from django.shortcuts import get_object_or_404, redirect
 
+from analytics.utils import log_user_action
 
 class ClubViewSet(viewsets.ModelViewSet):
     queryset = Club.objects.all()
@@ -48,10 +49,13 @@ def club_create(request):
             Membership.objects.create(user=request.user, club=club, is_admin=True)
 
             # логирование действия
-            UserAction.objects.create(
-                user=request.user,
-                action_type='content_interaction',
-                additional_info=f'Создан клуб: {club.name}'
+            log_user_action(
+                request,
+                action="Создание клуба",
+                metadata={
+                    "club_id": club.id,
+                    "club_name": club.name
+                }
             )
 
             messages.success(request, 'Клуб успешно создан!')

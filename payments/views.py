@@ -5,6 +5,8 @@ from .forms import PaymentForm
 from rest_framework import viewsets
 from .serializers import PaymentSerializer, ServiceTypeSerializer
 
+from analytics.utils import log_user_action
+
 class PaymentViewSet(viewsets.ModelViewSet):
     queryset = Payment.objects.all()
     serializer_class = PaymentSerializer
@@ -27,6 +29,18 @@ def payment_create(request):
             payment.user = request.user
             payment.status = 'pending'
             payment.save()
+
+            # логирование действия
+            log_user_action(
+                request,
+                action="Создание оплаты",
+                metadata={
+                    "payment_id": payment.id,
+                    "amount": str(payment.amount),
+                    "status": payment.status
+                }
+            )
+
             return redirect('payments:payment_list')
     else:
         form = PaymentForm()

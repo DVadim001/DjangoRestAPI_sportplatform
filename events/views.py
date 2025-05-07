@@ -14,6 +14,8 @@ from rest_framework.permissions import IsAuthenticated
 from .serializers import EventSerializer
 from rest_framework.permissions import AllowAny, IsAuthenticatedOrReadOnly
 
+from analytics.utils import log_user_action
+
 
 # Создание нового события
 @login_required
@@ -25,11 +27,14 @@ def create_new_event(request):
             event.organizer = request.user  # Установка создателя события
             event.save()
 
-            # логируем создание события
-            UserAction.objects.create(
-                user=request.user,
-                action_type='event_create',
-                description=f'Создал мероприятие: {event.name}'
+            # логируем создание события через analytics
+            log_user_action(
+                request,
+                action="Создание события",
+                metadata={
+                    "event_id": event.id,
+                    "event_name": event.name
+                }
             )
 
             return redirect('events:events_list')

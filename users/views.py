@@ -15,6 +15,7 @@ from .serializers import UserProfileSerializer
 from django.contrib.auth.decorators import login_required
 from rest_framework.permissions import AllowAny
 
+from analytics.utils import log_user_action
 
 def users_list(request):
     users = User.objects.all()
@@ -64,6 +65,19 @@ def edit_profile(request):
         if profile_form.is_valid():
             profile_form.save()
             user.save()  # сохраняем имя и фамилию
+
+            # логирование действия
+            log_user_action(
+                request,
+                action="Изменение профиля",
+                metadata={
+                    "user_id": user.id,
+                    "username": user.username,
+                    "first_name": user.first_name,
+                    "last_name": user.last_name
+                }
+            )
+
             return redirect('users:profile_view', user_id=user.id)
 
     else:
