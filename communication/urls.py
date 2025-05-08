@@ -1,14 +1,9 @@
 from django.urls import path
-from rest_framework.routers import DefaultRouter
 from . import views
 
 app_name = 'communication'
 
-router = DefaultRouter()
-router.register(r'messages', views.MessageViewSet, basename='message')
-router.register(r'notifications', views.NotificationViewSet, basename='notification')
-
-urlpatterns = router.urls + [
+urlpatterns = [
     path('messages/', views.message_list, name='message_list'),
     path('messages/<int:pk>/', views.message_detail, name='message_detail'),
     path('messages/new/', views.message_create, name='message_create'),
